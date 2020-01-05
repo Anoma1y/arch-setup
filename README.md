@@ -13,15 +13,37 @@
 
 | Dependency    | Description             |
 |:-------------:|:-----------------------:|
-| `i3-gaps`     | WM | Window Manager      |
+| `i3-gaps`     | Window Manager      |
+| `i3lock`     | improved screen locker      |
 |[Compton](https://www.archlinux.org/packages/community/x86_64/picom/)|Standalone compositor for Xorg|
 | `rofi`        | Application launcher |
 |[oh-my-zsh](https://aur.archlinux.org/packages/oh-my-zsh-git/)|Shell|
 |[I3blocks](https://github.com/vivien/i3blocks) + [i3blocks-contrib](https://github.com/vivien/i3blocks-contrib)|Panel|
 |[feh](https://wiki.archlinux.org/index.php/feh)|Background Setter|
 
+
 ## Installation
 
 ```
 $ cd ~ && git clone git@github.com:Anoma1y/i3-dotfiles.git . && rm .gitignore
+```
+
+Dependencies for i3blocks-contrib and i3
+
+```
+$ pacman -S xss-lock sysstat
+```
+
+#### Oh My Zsh
+
+Install oh-my-zsh
+
+$ sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+
+Install plugins
+
+```
+$ git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+$ git clone https://github.com/zsh-users/zsh-completions ${ZSH_CUSTOM:=~/.oh-my-zsh/custom}/plugins/zsh-completions
+$ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 ```
