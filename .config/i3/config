@@ -198,7 +198,7 @@ bar {
 exec "setxkbmap -option 'grp:alt_shift_toggle' -layout us,ru"
 
 exec --no-startup-id flameshot
-exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork --color=#000000
 exec --no-startup-id feh --bg-fill ~/bg_1.jpg --bg-fill ~/bg_3.jpg --bg-fill ~/bg_2.jpg
 exec --no-startup-id compton
 
