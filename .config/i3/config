@@ -160,10 +160,10 @@ set $first-color  #0C7393
 # [ window colors ]
 # class                  border  	 background	 text    	indicator 	child_border
 client.focused           #14171A     #14171A     #CCCCCC     #393f4d     #393f4d
-client.focused_inactive  #242e38     #1a1f24     #CCCCCC     #000d1a     #000d1a
-client.unfocused         #242e38     #242e38     #CCCCCC     #000d1a     #000d1a
-client.urgent            #242e38     #242e38     #CCCCCC     #000d1a     #000d1a
-client.placeholder       #242e38     #242e38     #CCCCCC     #000d1a     #000d1a
+client.focused_inactive  #293540     #1a1f24     #CCCCCC     #000d1a     #000d1a
+client.unfocused         #293540     #293540     #CCCCCC     #000d1a     #000d1a
+client.urgent            #293540     #293540     #CCCCCC     #000d1a     #000d1a
+client.placeholder       #293540     #293540     #CCCCCC     #000d1a     #000d1a
 client.background                    #551177
 
 # [ i3 gaps ]
