@@ -111,13 +111,12 @@ bindsym $mod+Shift+0 move container to workspace number $ws10
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
+
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
+
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
-
-bindsym Print exec "flameshot gui"
-
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -146,16 +145,7 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-new_window none
-new_float normal
-
-hide_edge_borders none
-
-smart_borders on
-smart_gaps on
-
-gaps inner 15
-gaps outer 5
+bindsym Print exec "flameshot gui"
 
 new_window none
 
@@ -168,31 +158,50 @@ set $first-color  #0C7393
 
 
 # [ window colors ]
-#
-# class                 border  	backgr.		text    	indicator 	child_border
-client.focused          #708FE8 	#000000 	#ffffff 	#000000   	#000000
-client.focused_inactive #222222 	#5f676a		#ffffff 	#5f676a   	#5f676a
-client.unfocused        #212121 	#212121 	#cccccc 	#292d2e   	#5a5a5a
-client.urgent           #d64e4e #d64e4e #ffffff #d64e4e   #d64e4e
-client.placeholder      #212121 #0c0c0c #ffffff #212121   #262626
-client.background       #000000
+# class                  border  	 background	 text    	indicator 	child_border
+client.focused           #14171A     #14171A     #CCCCCC     #393f4d     #393f4d
+client.focused_inactive  #192733     #1a1f24     #CCCCCC     #000d1a     #000d1a
+client.unfocused         #192733     #192733     #CCCCCC     #000d1a     #000d1a
+client.urgent            #192733     #192733     #CCCCCC     #000d1a     #000d1a
+client.placeholder       #192733     #192733     #CCCCCC     #000d1a     #000d1a
+client.background                    #551177
 
+# [ i3 gaps ]
 
-# i3blocks
+new_window none
+new_float normal
+
+hide_edge_borders none
+
+smart_borders on
+smart_gaps on
+
+gaps inner 15
+gaps outer 5
+
+# [ i3blocks ]
 bar {
     status_command i3blocks -c ~/.config/i3blocks/i3blocks.conf
-	position		bottom
-	colors {
-		background 	#212121
-		statusline 	#dddddd
-        separator 	#666666
-		# class            	border      		background         	text
-		focused_workspace  	#2b83a6          	#2b83a6          	#ffffff
-		active_workspace	#212121			#212121			#212121
-		inactive_workspace 	#212121 		#212121 		#86888c
-		urgent_workspace   	#d64e4e   		#d64e4e   		#ffffff
-		binding_mode		#229c56			#229c56			#ffffff
-	}
+    bindsym button4         nop
+    bindsym button5         nop
+    position                bottom
+    tray_output             primary
+    separator_symbol        "·"
+    workspace_buttons       yes
+    strip_workspace_numbers yes
+
+    colors {
+        background  #212121
+        statusline  #dddddd
+        separator   #666666
+        # class             border  backgr. text
+        focused_workspace   #2b83a6 #2b83a6 #ffffff
+        active_workspace    #212121 #212121 #ffffff
+        inactive_workspace  #212121 #212121 #86888c
+        urgent_workspace    #d64e4e #d64e4e #ffffff
+        binding_mode        #229c56 #229c56 #ffffff
+    }
+
 }
 
 exec "setxkbmap -option 'grp:alt_shift_toggle' -layout us,ru"
@@ -203,7 +212,6 @@ exec --no-startup-id feh --bg-fill ~/bg_1.jpg --bg-fill ~/bg_3.jpg --bg-fill ~/b
 exec --no-startup-id compton
 
 exec --no-startup-id nm-applet
-
 
 workspace 3 output DP-1
 workspace 1 output DP-3
