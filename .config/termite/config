@@ -22,18 +22,12 @@ cursor_shape = block
 # Hide links that are no longer valid in url select overlay mode
 filter_unmatched_urls = true
 
-# 20% background transparency (requires a compositor)
-#background = rgba(63, 63, 63, 0.8)
-
-# if unset, will reverse foreground and background
-# highlight = #2f2f2f
-
 [colors]
 
 foreground      = #EFEAE4
 foreground_bold = #E9DDCF
 cursor          = #c8c5c8
-background      = rgba(25, 25, 25, 0.90)
+background      = rgba(25, 25, 25, 0.92)
 
 highlight = #553035
 
