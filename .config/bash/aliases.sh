@@ -1,5 +1,6 @@
 #!/bin/bash
 
+alias ...="cd ../.."
 alias ll="ls -laF"
 alias gs="git status"
 alias flex="clear && neofetch --cpu_display infobar --cpu_temp | lolcat"
