@@ -1,9 +1,7 @@
 export ZSH="/home/anoma1y/.oh-my-zsh"
 
-cfg="$HOME"'/.config'
-
-source "$cfg"'/bash/aliases.sh'
-source "$cfg"'/bash/exports.sh'
+source "$HOME"'/.config/bash/aliases.sh'
+source "$HOME"'/.config/bash/exports.sh'
 
 ZSH_THEME="agnoster"
 
@@ -21,5 +19,3 @@ autoload -Uz compinit && compinit
 source $ZSH/oh-my-zsh.sh
 
 export SHELL="$(which zsh)"
-
-unset cfg
