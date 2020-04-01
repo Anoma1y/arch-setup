@@ -56,7 +56,7 @@ $ ln -s ~/Projects/Dotfiles/i3 ~/.config
 Dependencies for i3blocks-contrib and i3
 
 ```
-$ pacman -S xss-lock sysstat lolcat
+$ pacman -S xautolock sysstat lolcat
 ```
 
 #### Oh My Zsh
@@ -74,3 +74,7 @@ $ git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh
 $ git clone https://github.com/zsh-users/zsh-completions ${ZSH_CUSTOM:=~/.oh-my-zsh/custom}/plugins/zsh-completions
 $ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 ```
+
+#### Commands
+
+$mod + Shift + O - screen lock
