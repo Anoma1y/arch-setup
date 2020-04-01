@@ -56,7 +56,7 @@ $ ln -s ~/Projects/Dotfiles/i3 ~/.config
 Dependencies for i3blocks-contrib and i3
 
 ```
-$ pacman -S xautolock sysstat lolcat
+$ pacman -S xss-lock sysstat lolcat
 ```
 
 #### Oh My Zsh
