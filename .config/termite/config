@@ -42,7 +42,7 @@ color1  = #fb4934
 color9  = #fb4934
 
 # Green
-color2  = #95c10f
+color2  = #65c10f
 color10 = #6fa612
 
 # Yellow
@@ -50,8 +50,8 @@ color3  = #fabd2f
 color11 = #fabd2f
 
 # Blue
-color4  = #3486BE
-color12 = #3486BE
+color4  = #188ddb
+color12 = #188ddb
 
 # Purple
 color5  = #D06280
