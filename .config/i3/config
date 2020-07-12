@@ -212,6 +212,7 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork --color=#
 #exec --no-startup-id xautolock -time 10 -locker 'i3lock -e -c 000000'
 exec --no-startup-id feh --bg-fill ~/bg_1.jpg --bg-fill ~/bg_3.jpg --bg-fill ~/bg_2.jpg
 exec --no-startup-id compton
+exec --no-startup-id dunst
 
 workspace 3 output DP-1
 workspace 1 output DP-3

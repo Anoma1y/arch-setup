@@ -256,7 +256,7 @@ appname = Spotify
 format = "<b>Now Playing:</b>\n%s\n<i>%b</i>"
 timeout = 4
 
-# Every section that isn't one of the above is interpreted as a rules to
+Every section that isn't one of the above is interpreted as a rules to
 # override settings for certain messages.
 #
 # Messages can be matched by
