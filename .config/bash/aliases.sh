@@ -2,6 +2,7 @@
 
 alias ...="cd ../.."
 alias ll="ls -laF"
+alias lls="ls -laFtr"
 alias gs="git status --short"
 alias gsf="git status"
 alias flex="clear && neofetch --cpu_display infobar --cpu_temp | lolcat"
