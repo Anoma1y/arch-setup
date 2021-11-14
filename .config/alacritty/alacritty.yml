@@ -18,7 +18,7 @@ font:
   bold_italic:
     family: JetBrains Mono
     style: Bold Italic
-  size: 11
+  size: 10
   offset:
     x: 0
     y: 3
@@ -27,8 +27,8 @@ font:
 schemes:
   default: &default
     primary:
-      background: '#2b2b2b'
-      foreground: '#e6e1dc'
+      background: '#191919'
+      foreground: '#efeae4'
     cursor:
       text: CellBackground
       cursor: CellForeground
