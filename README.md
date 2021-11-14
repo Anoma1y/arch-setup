@@ -6,7 +6,7 @@
 - **Theme**: Arc Dark
 - **Icons**: [Arc Icon Theme](https://github.com/horst3180/arc-icon-theme)
 - **Shell**: ZSH
-- **Terminal**: Termite
+- **Terminal**: Alacritty
 - **Compositor**: [Compton](https://www.archlinux.org/packages/community/x86_64/picom/)
 
 ## Requirements
@@ -15,7 +15,7 @@
 
 | Dependency    | Description             |
 |:-------------|:-----------------------|
-|Termite|Terminal emulator|
+|Alacritty|Terminal emulator|
 |[oh-my-zsh](https://aur.archlinux.org/packages/oh-my-zsh-git/)|Shell|
 |Git|Version control software|
 |neofetch|Flexing tool|

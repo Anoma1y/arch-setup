@@ -1,6 +1,10 @@
 #!/bin/bash
 
 PATH="$HOME/.node_modules/bin:$PATH"
+PATH="$HOME/bin:$PATH"
+PATH="$HOME/build/wine:$PATH"
+
+export OSU_STABLE_DATA_DIRECTORY="${HOME}/.local/share/osu-stable"
 
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
