@@ -211,7 +211,7 @@ exec "setxkbmap -option 'grp:alt_shift_toggle' -layout us,ru"
 exec --no-startup-id flameshot
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork --color=#000000
 #exec --no-startup-id xautolock -time 10 -locker 'i3lock -e -c 000000'
-exec --no-startup-id feh --bg-fill ~/bg/bg_1.jpg --bg-fill ~/bg/bg_3.jpg --bg-fill ~/bg/bg_2.jpg --bg-fill ~/bg/bg_4.png
+exec --no-startup-id feh --bg-fill ~/bg/bg_1.jpeg --bg-fill ~/bg/bg_3.jpg --bg-fill ~/bg/bg_2.jpg --bg-fill ~/bg/bg_4.png
 exec --no-startup-id picom
 exec --no-startup-id dunst
 

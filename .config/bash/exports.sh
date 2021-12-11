@@ -3,6 +3,7 @@
 PATH="$HOME/.node_modules/bin:$PATH"
 PATH="$HOME/bin:$PATH"
 PATH="$HOME/build/wine:$PATH"
+PATH="$HOME/go/bin:$PATH"
 
 export OSU_STABLE_DATA_DIRECTORY="${HOME}/.local/share/osu-stable"
 

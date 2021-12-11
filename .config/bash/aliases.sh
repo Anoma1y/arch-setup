@@ -10,3 +10,5 @@ alias gdiff="git diff"
 alias glog="git log --graph --pretty=format:'%Cred%h%Creset - %s %Cgreen(%cr) %C(bold blue)<%an>%C(yellow)%d%Creset' --abbrev-commit"
 alias glogc="git shortlog -s -n --all"
 alias gsu="git ls-files --others --exclude-standard"
+alias ssh="TERM=xterm-256color ssh"
+
