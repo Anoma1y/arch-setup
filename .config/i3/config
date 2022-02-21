@@ -1,6 +1,6 @@
 set $mod Mod4
 
-font pango:DejaVu Sans Mono 12
+font pango:DejaVu Sans Mono 9
 
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
@@ -215,7 +215,7 @@ exec --no-startup-id feh --bg-fill ~/bg/bg_1.jpeg --bg-fill ~/bg/bg_3.jpg --bg-f
 exec --no-startup-id picom
 exec --no-startup-id dunst
 
-workspace 1 output DP-3
-workspace 4 output DP-1
+workspace 1 output DP-1
+workspace 4 output DP-3
 workspace 3 output HDMI-0
 workspace 2 output DP-4
