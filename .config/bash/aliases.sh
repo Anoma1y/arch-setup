@@ -11,4 +11,5 @@ alias glog="git log --graph --pretty=format:'%Cred%h%Creset - %s %Cgreen(%cr) %C
 alias glogc="git shortlog -s -n --all"
 alias gsu="git ls-files --others --exclude-standard"
 alias ssh="TERM=xterm-256color ssh"
+alias keyboard="setxkbmap -option 'grp:alt_shift_toggle' -layout us,ru"
 
