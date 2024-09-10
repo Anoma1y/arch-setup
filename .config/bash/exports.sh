@@ -20,4 +20,4 @@ export npm_config_prefix=~/.node_modules
 # Unset the npm_config_prefix to avoid conflicts with npm behavior.
 unset npm_config_prefix
 # Source the nvm script to load NVM into the current shell session.
-source /usr/share/nvm/nvm.sh
+source $NVM_DIR/nvm.sh

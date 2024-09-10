@@ -1,4 +1,4 @@
-export ZSH="/home/anoma1y/.oh-my-zsh"
+export ZSH="$HOME/.oh-my-zsh"
 
 ZSH_THEME="agnoster"
 
@@ -13,9 +13,6 @@ plugins=(
 
 autoload -Uz compinit && compinit
 
-source $ZSH/oh-my-zsh.sh
-
-source "$HOME"'/.config/bash/aliases.sh'
-source "$HOME"'/.config/bash/exports.sh'
-
-export SHELL="$(which zsh)"
+source "$HOME/.oh-my-zsh/oh-my-zsh.sh"
+source "$HOME/.config/bash/aliases.sh"
+source "$HOME/.config/bash/exports.sh"
