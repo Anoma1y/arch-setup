@@ -19,7 +19,7 @@ else
 fi
 
 print_message info "Install XORG"
-pacman_install "pacman_video"
+pacman_install_from_config "pacman_video"
 
 print_message info "Install OpenGL drivers"
-pacman_install "pacman_opengl"
+pacman_install_from_config "pacman_opengl"

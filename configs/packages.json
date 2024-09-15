@@ -6,7 +6,8 @@
         "cmake",
         "lsof",
         "traceroute",
-        "ufw"
+        "ufw",
+        "git"
     ],
     "pacman_video": [
         "xorg",
@@ -46,6 +47,17 @@
     "pacman_laptop": [
         "acpid",
         "brightnessctl"
+    ],
+    "pacman_i3": [
+        "i3-wm",
+        "polybar",
+        "rofi",
+        "xss-lock",
+        "i3lock"
+    ],
+    "pacman_terminal": [
+        "alacritty",
+        "zsh"
     ],
     "aur_fonts": [
         "nerd-fonts-fira-code",
