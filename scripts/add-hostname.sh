@@ -1,5 +1,6 @@
 #!/bin/bash
 
+root_check
 
 while true; do
     read -rp "Enter hostname: " hostname

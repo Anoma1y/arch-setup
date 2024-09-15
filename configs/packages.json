@@ -8,6 +8,29 @@
         "traceroute",
         "ufw"
     ],
+    "pacman_video": [
+        "xorg",
+        "xorg-apps",
+        "xorg-drivers",
+        "xorg-server",
+        "xorg-xinit",
+        "xorg-xkill",
+        "xorg-xrandr",
+        "mesa",
+        "mesa-utils",
+        "lib32-mesa"
+    ],
+    "pacman_audio": [
+        "pipewire-alsa",
+        "pipewire-jack",
+        "pipewire-pulse",
+        "lib32-pipewire",
+        "lib32-pipewire-jack",
+        "wireplumber",
+        "alsa-plugins",
+        "alsa-utils",
+        "pavucontrol"
+    ],
     "pacman_fonts": [
         "powerline-fonts",
         "terminus-font",
