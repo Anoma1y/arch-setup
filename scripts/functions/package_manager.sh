@@ -1,5 +1,17 @@
 #!/bin/bash
 
+function multilib_enable() {
+    if grep -q "^\[multilib\]" /etc/pacman.conf; then
+        print_message info "Multilib already enabled"
+    else
+        print_message info "Enabling multilib"
+        sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
+
+        print_message info "Syncing repos"
+        pacman -Sy --noconfirm --needed --color=always
+    fi
+}
+
 function mirrorlist_update() {
     local REGION="${1:-RU}"
 

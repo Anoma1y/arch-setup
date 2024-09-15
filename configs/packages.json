@@ -15,7 +15,9 @@
         "xorg-server",
         "xorg-xinit",
         "xorg-xkill",
-        "xorg-xrandr",
+        "xorg-xrandr"
+    ],
+    "pacman_opengl": [
         "mesa",
         "mesa-utils",
         "lib32-mesa"
@@ -40,6 +42,10 @@
         "ttf-roboto",
         "ttf-jetbrains-mono",
         "ttf-font-awesome"
+    ],
+    "pacman_laptop": [
+        "acpid",
+        "brightnessctl"
     ],
     "aur_fonts": [
         "nerd-fonts-fira-code",
