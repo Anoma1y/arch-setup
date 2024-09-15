@@ -1,0 +1,5 @@
+# Include common configurations
+include ~/.config/i3/config_common
+
+# Include machine-specific configurations
+include ~/.config/i3/config_machine

@@ -1,0 +1,25 @@
+{
+    "pacman_essential": [
+        "linux-headers",
+        "bind",
+        "btop",
+        "cmake",
+        "lsof",
+        "traceroute",
+        "ufw"
+    ],
+    "pacman_fonts": [
+        "powerline-fonts",
+        "terminus-font",
+        "ttf-droid",
+        "ttf-fira-code",
+        "ttf-liberation",
+        "ttf-roboto",
+        "ttf-jetbrains-mono",
+        "ttf-font-awesome"
+    ],
+    "aur_fonts": [
+        "nerd-fonts-fira-code",
+        "noto-fonts-emoji"
+    ]
+}
