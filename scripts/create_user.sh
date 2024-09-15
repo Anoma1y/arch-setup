@@ -27,19 +27,14 @@ function username_prompt() {
 username_prompt
 password_prompt
 
-echo "$USERNAME"
-echo "$PASSWORD"
-
-useradd -m -G wheel,libvirt -s /bin/bash "$USERNAME"
-
 if ! getent group libvirt > /dev/null 2>&1; then
     groupadd libvirt
     echo "Group 'libvirt' has been created."
 fi
 
-useradd -m -G wheel,libvirt -s /bin/bash "$USERNAME"
-echo "$USERNAME created, home directory created, added to wheel and libvirt group, default shell set to /bin/bash"
+useradd -m -G wheel,libvirt "$USERNAME"
+echo "$USERNAME created, home directory created, added to wheel and libvirt group"
 
-# use chpasswd to enter $USERNAME:$password
+# use chpasswd to enter $USERNAME:$PASSWORD
 echo "$USERNAME":"$PASSWORD" | chpasswd
 echo "$USERNAME password set"
