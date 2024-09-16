@@ -13,7 +13,7 @@
 - [ ] install-audio.sh
 - [ ] install-docker.sh
 - [ ] install-fonts.sh
-- [ ] install-graphics.sh
+- [x] install-graphics.sh
 - [ ] install-i3.sh
 - [ ] install-laptop-packages.sh
 - [x] install-microcode.sh
@@ -21,5 +21,5 @@
 - [ ] install-terminal.sh
 - [x] install-network-manager.sh
 - [ ] nmcli-wifi-autoconnect.sh
-- [ ] uncomment-wheel-sudo.sh
 - [ ] update-hosts.sh
+- [ ] uncomment-wheel-sudo.sh

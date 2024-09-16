@@ -4,7 +4,7 @@ source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/functions/functions.sh"
 
 root_check
 
-todo add hostname check
+# todo add hostname check
 
 ADDITIONAL_HOSTS_FILE="$(pwd)/configs/hosts"
 
@@ -25,5 +25,5 @@ echo "$DEFAULT_HOSTS" > /etc/hosts
 
 cat "$ADDITIONAL_HOSTS_FILE" >> /etc/hosts
 
-printmessage info "/etc/hosts has been updated successfully."
-printmessage info "A backup of the original file is saved as /etc/hosts.backup."
+print_message info "/etc/hosts has been updated successfully."
+print_message info "A backup of the original file is saved as /etc/hosts.backup."
