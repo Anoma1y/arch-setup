@@ -13,8 +13,9 @@ for script in "${scripts[@]}"; do
         continue
     fi
 
-    if [[ -f "$script" ]]; then
-        source "$HOME/.config/bash/$script.sh"
+    script_path="$HOME/.config/bash/$script.sh";
+    if [[ -f "$script_path" ]]; then
+        source "$script_path"
     else
         echo "File $script does not exist."
     fi
