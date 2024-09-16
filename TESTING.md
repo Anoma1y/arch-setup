@@ -4,13 +4,13 @@
 - [x] install-pacstrap-base.sh
 - [x] gen-fstab.sh
 - [x] mirror-list.sh
-- [ ] efi-grub-config.sh
+- [x] efi-grub-config.sh
 - [x] add-hostname.sh
 - [ ] add-locale.sh
 - [ ] install-essential-packages.sh
-- [ ] create_user.sh
+- [ ] create-user.sh
 - [x] enable-multilib.sh
-- [ ] install-audio.sh
+- [x] install-audio.sh
 - [ ] install-docker.sh
 - [ ] install-fonts.sh
 - [x] install-graphics.sh
