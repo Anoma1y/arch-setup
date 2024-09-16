@@ -59,28 +59,28 @@ set -e
 
 print_message info "Disk preparation"
 # flush all on disk
-sgdisk -Z "${DISK}"
+sgdisk -Z "${DISK_NAME}"
 # new gpt disk 2048 alignment
-sgdisk -a 2048 -o "${DISK}"
+sgdisk -a 2048 -o "${DISK_NAME}"
 
 print_message info "Creating first partition: EFIBOOT (UEFI Boot Partition)"
-sgdisk -n 1::+512M --typecode=1:ef00 --change-name=1:'EFIBOOT' "${DISK}"
+sgdisk -n 1::+512M --typecode=1:ef00 --change-name=1:'EFIBOOT' "${DISK_NAME}"
 
 print_message info "Creating second partition: ROOT"
-sgdisk -n 2::-0 --typecode=2:8300 --change-name=2:'ROOT' "${DISK}"
+sgdisk -n 2::-0 --typecode=2:8300 --change-name=2:'ROOT' "${DISK_NAME}"
 
 # reread partition table to ensure it is correct
-partprobe "${DISK}"
+partprobe "${DISK_NAME}"
 
 print_message info "Make filesystems"
 
 # Adjust partition naming for nvme or mmc devices
-if [[ "${DISK}" =~ "nvme" || "${DISK}" =~ "mmc" ]]; then
-    partition1="${DISK}"p1
-    partition2="${DISK}"p2
+if [[ "${DISK_NAME}" =~ "nvme" || "${DISK_NAME}" =~ "mmc" ]]; then
+    partition1="${DISK_NAME}"p1
+    partition2="${DISK_NAME}"p2
 else
-    partition1="${DISK}"1
-    partition2="${DISK}"2
+    partition1="${DISK_NAME}"1
+    partition2="${DISK_NAME}"2
 fi
 
 print_message info "Creating FAT32 boot filesystem on ${partition1}"
