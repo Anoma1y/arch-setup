@@ -35,5 +35,5 @@ echo -en "  NVM: $NVM_VERSION"
 
 pacman -S --noconfirm --needed --color=always nodejs
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v$NVM_VERSION/install.sh | bash
-nvm install "$NODE_VERSION"
+nvm install "$NODE_VERSION" # todo need fix
 nvm alias default "$NODE_VERSION"

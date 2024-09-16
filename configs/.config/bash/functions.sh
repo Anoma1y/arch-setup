@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/bash
 
 function lazyload {
   local cmd=$1
