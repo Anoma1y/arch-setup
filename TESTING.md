@@ -2,7 +2,8 @@
 - [x] add-keyserver.sh
 - [x] enable-parallel-downloads.sh
 - [x] install-pacstrap-base.sh
-- [ ] gen-fstab.sh
+- [x] gen-fstab.sh
+- [x] mirror-list.sh
 - [ ] efi-grub-config.sh
 - [ ] add-hostname.sh
 - [ ] add-locale.sh
@@ -18,8 +19,7 @@
 - [ ] install-microcode.sh
 - [ ] install-nodejs.sh
 - [ ] install-terminal.sh
-- [ ] mirror-list.sh
-- [ ] network-manager-install.sh
+- [ ] install-network-manager.sh
 - [ ] nmcli-wifi-autoconnect.sh
 - [ ] uncomment-wheel-sudo.sh
 - [ ] update-hosts.sh
