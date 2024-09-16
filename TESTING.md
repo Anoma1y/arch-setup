@@ -1,0 +1,25 @@
+- [x] format-disk.sh
+- [x] add-keyserver.sh
+- [x] enable-parallel-downloads.sh
+- [x] install-pacstrap-base.sh
+- [ ] gen-fstab.sh
+- [ ] efi-grub-config.sh
+- [ ] add-hostname.sh
+- [ ] add-locale.sh
+- [ ] install-essential-packages.sh
+- [ ] create_user.sh
+- [ ] enable-multilib.sh
+- [ ] install-audio.sh
+- [ ] install-docker.sh
+- [ ] install-fonts.sh
+- [ ] install-graphics.sh
+- [ ] install-i3.sh
+- [ ] install-laptop-packages.sh
+- [ ] install-microcode.sh
+- [ ] install-nodejs.sh
+- [ ] install-terminal.sh
+- [ ] mirror-list.sh
+- [ ] network-manager-install.sh
+- [ ] nmcli-wifi-autoconnect.sh
+- [ ] uncomment-wheel-sudo.sh
+- [ ] update-hosts.sh
