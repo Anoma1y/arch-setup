@@ -9,17 +9,17 @@
 - [ ] add-locale.sh
 - [ ] install-essential-packages.sh
 - [ ] create_user.sh
-- [ ] enable-multilib.sh
+- [x] enable-multilib.sh
 - [ ] install-audio.sh
 - [ ] install-docker.sh
 - [ ] install-fonts.sh
 - [ ] install-graphics.sh
 - [ ] install-i3.sh
 - [ ] install-laptop-packages.sh
-- [ ] install-microcode.sh
+- [x] install-microcode.sh
 - [ ] install-nodejs.sh
 - [ ] install-terminal.sh
-- [ ] install-network-manager.sh
+- [x] install-network-manager.sh
 - [ ] nmcli-wifi-autoconnect.sh
 - [ ] uncomment-wheel-sudo.sh
 - [ ] update-hosts.sh
