@@ -38,10 +38,12 @@ function install_aur_helper() {
 
 function pacman_install_from_config() {
     local package_array="$1"
-    print_message info "Install $1 packages"
+    print_message info "Install $package_array packages"
 
     packages=$(extract_packages_array "$package_array")
-    pacman_install "$packages"
+    package_list=($(echo "$packages"))
+
+    pacman_install "${package_list[@]}"
 }
 
 function aur_install() {
