@@ -1,5 +1,7 @@
 #!/bin/bash
 
+packages_file=$(pwd)/configs/packages.json
+
 # print_message info "This is an info message"
 # print_message danger "This is a danger message"
 # print_message success "This is a success message"

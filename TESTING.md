@@ -5,7 +5,7 @@
 - [x] gen-fstab.sh
 - [x] mirror-list.sh
 - [ ] efi-grub-config.sh
-- [ ] add-hostname.sh
+- [x] add-hostname.sh
 - [ ] add-locale.sh
 - [ ] install-essential-packages.sh
 - [ ] create_user.sh
