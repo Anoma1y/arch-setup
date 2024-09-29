@@ -1,0 +1,35 @@
+#!/bin/bash
+
+# Matches first 3 letters of layout name.
+MATCH='\w{3}'
+
+# Matches short layout name.
+#MATCH='\w*'
+
+# Matches full layout name.
+#MATCH='\w*(\s\(.*\))?'
+
+# Restart kbdd to apply layout changes on block reload.
+killall kbdd 2>/dev/null
+kbdd >/dev/null || exit 1
+
+# Get initial state of layout
+N=$( dbus-send --print-reply=literal --dest=ru.gentoo.KbddService\
+    /ru/gentoo/KbddService ru.gentoo.kbdd.getCurrentLayout 2>/dev/null |\
+    sed -un 's/^.*uint32 //p' )
+
+# In case dbus service wasn't available yet, poll until service is ready.
+while [[ -z "$N" ]]; do
+    sleep .1
+    N=$( dbus-send --print-reply=literal --dest=ru.gentoo.KbddService\
+        /ru/gentoo/KbddService ru.gentoo.kbdd.getCurrentLayout 2>/dev/null |\
+        sed -un 's/^.*uint32 //p' )
+done
+dbus-send --print-reply=literal --dest=ru.gentoo.KbddService \
+  /ru/gentoo/KbddService ru.gentoo.kbdd.getLayoutName uint32:"$N" |\
+  grep -Po "${MATCH}" | head -n1
+
+# Parse dbus output.
+dbus-monitor "interface='ru.gentoo.kbdd',member='layoutNameChanged'" |\
+  grep -Po --line-buffered "(?<=string \")${MATCH}"
+
