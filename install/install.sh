@@ -1,8 +1,11 @@
 #!/bin/bash
 
+set -e
+
 CONFS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/conf"
 UTILS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/utils"
 STEPS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/steps"
+MY_CONFS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/../configs"
 
 function init_configs() {
     source "$CONFS_DIR/_local.conf"
@@ -18,59 +21,100 @@ function init_utils() {
     source "$UTILS_DIR/package_manager.sh"
 }
 
+# Load and sort step files
+function load_steps() {
+    if [[ ! -d "$STEPS_DIR" ]]; then
+        echo "Error: Steps directory '$STEPS_DIR' does not exist."
+        exit 1
+    fi
+
+    mapfile -t steps < <(ls "$STEPS_DIR" | sort)
+}
+
+# Filter steps based on ONLY_STEPS variable
+function filter_steps() {
+    if [[ -n "${ONLY_STEPS[*]}" ]]; then
+        declare -A allowed_steps
+        for step in "${ONLY_STEPS[@]}"; do
+            allowed_steps["$step"]=1
+        done
+
+        local filtered_steps=()
+        for file in "${steps[@]}"; do
+            local number="${file%%_*}"
+            number="${number#0}"
+
+            if [[ ${allowed_steps["$number"]} ]]; then
+                filtered_steps+=("$file")
+            fi
+        done
+
+        steps=("${filtered_steps[@]}")
+    fi
+}
+
+# Execute each step file
+function execute_steps() {
+    for file in "${steps[@]}"; do
+        local step_path="${STEPS_DIR}/${file}"
+
+        if [[ ! -f "$step_path" ]]; then
+            warning "Skipping $step_path: Not a file."
+            continue
+        fi
+
+        local number="${file%%_*}"
+        number="${number#0}"
+
+        if contains SKIP_STEPS "$number"; then
+            warning "Skipping $file: Listed in SKIP_STEPS."
+            continue
+        fi
+
+        if [[ -x "$step_path" ]]; then
+                local step_name
+                step_name=$(echo "$file" | cut -d'_' -f2 | cut -d'.' -f1)
+                format_step "[Start] Step #$number - $step_name"
+                source "$step_path"
+                format_step "  [End] Step #$number - $step_name"
+                echo
+            else
+                warning "Skipping $file: Not executable."
+        fi
+    done
+}
+
+function display_timestamps() {
+    local end_timestamp
+    end_timestamp=$(date -u +"%F %T")
+
+    # Calculate duration in seconds
+    local start_epoch end_epoch duration
+    start_epoch=$(date -d "$START_TIMESTAMP" +%s)
+    end_epoch=$(date -d "$end_timestamp" +%s)
+    duration=$((end_epoch - start_epoch))
+
+    # Format duration as HH:MM:SS
+    INSTALLATION_TIME=$(printf '%02d:%02d:%02d' $((duration/3600)) $(( (duration%3600)/60 )) $((duration%60)))
+
+    echo "  Start time:   $START_TIMESTAMP"
+    echo "    End time:   $end_timestamp"
+    echo "   Took time:   $INSTALLATION_TIME"
+}
+
 function main() {
-    local START_TIMESTAMP=$(date -u +"%F %T")
+    START_TIMESTAMP=$(date -u +"%F %T")
 
     init_configs
     init_utils
 
     efi_check
 
-    steps=($(ls "$STEPS_DIR" | sort))
+    load_steps
+    filter_steps
+    execute_steps
 
-    if [[ -n "${ONLY_STEPS[*]}" ]]; then
-        local tmp_steps=()
-
-        for FILE_NAME in "${steps[@]}"; do
-            local number="${FILE_NAME%%_*}"
-            number="${number#0}"
-
-            if contains ONLY_STEPS "$number"; then
-                tmp_steps+=("$FILE_NAME")
-            fi
-        done
-
-        steps=("${tmp_steps[@]}")
-    fi
-
-    for FILE_NAME in "${steps[@]}"; do
-        FILE="$STEPS_DIR/$FILE_NAME"
-
-        local number="${FILE_NAME%%_*}"
-        number="${number#0}"
-
-        if contains SKIP_STEPS "$number"; then
-            warning "Skipping $FILE_NAME: Listed in SKIP_STEPS."
-            continue
-        fi
-
-        if [[ -f "$FILE" ]]; then
-            STEP_NAME=$(echo "$FILE_NAME" | cut -d'_' -f2 | cut -d'.' -f1)
-            format_step "[Start] Step #$number - $STEP_NAME"
-            source "$FILE"
-            format_step "  [End] Step #$number - $STEP_NAME"
-            echo -e ""
-        else
-            echo "Skipping $FILE: Not executable."
-        fi
-    done
-
-    local END_TIMESTAMP=$(date -u +"%F %T")
-    local INSTALLATION_TIME=$(date -u -d @$(($(date -d "$END_TIMESTAMP" '+%s') - $(date -d "$START_TIMESTAMP" '+%s'))) '+%T')
-
-    echo "  Start time:   $START_TIMESTAMP"
-    echo "    End time:   $END_TIMESTAMP"
-    echo "   Took time:   $INSTALLATION_TIME"
+    display_timestamps
 }
 
 main

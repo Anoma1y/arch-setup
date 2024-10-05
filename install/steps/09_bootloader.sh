@@ -13,10 +13,10 @@ function mkinitcpio_configuration() {
     HOOKS=$(sanitize_variable "$HOOKS")
     MODULES=$(sanitize_variable "$MODULES")
 
-    arch-chroot "${MNT_DIR}" sed -i "s/^HOOKS=(.*)$/HOOKS=($HOOKS)/" /etc/mkinitcpio.conf
-    arch-chroot "${MNT_DIR}" sed -i "s/^MODULES=(.*)/MODULES=($MODULES)/" /etc/mkinitcpio.conf
+    arch-chroot /mnt sed -i "s/^HOOKS=(.*)$/HOOKS=($HOOKS)/" /etc/mkinitcpio.conf
+    arch-chroot /mnt sed -i "s/^MODULES=(.*)/MODULES=($MODULES)/" /etc/mkinitcpio.conf
 
-    arch-chroot "${MNT_DIR}" mkinitcpio -P
+    arch-chroot /mnt mkinitcpio -P
 }
 
 function grub_install() {
@@ -24,13 +24,13 @@ function grub_install() {
 
     pacman_install "efibootmgr grub dosfstools os-prober"
 
-    arch-chroot "${MNT_DIR}" grub-install --target=x86_64-efi \
+    arch-chroot /mnt grub-install --target=x86_64-efi \
         --efi-directory=${ESP_DIRECTORY} \
         --bootloader-id=GRUB \
         --recheck
 
     # Generate the GRUB configuration file
-    arch-chroot "${MNT_DIR}" grub-mkconfig -o ${BOOT_DIRECTORY}/grub/grub.cfg
+    arch-chroot /mnt grub-mkconfig -o ${BOOT_DIRECTORY}/grub/grub.cfg
 }
 
 function microcode_install() {

@@ -5,14 +5,14 @@ function prepare_partition() {
 
     info "Preparing partitions by unmounting existing mount points..."
 
-    if mountpoint -q "${MNT_DIR}"/boot; then
+    if mountpoint -q /mnt/boot; then
         info_sub "Unmounting boot partition..."
-        umount "${MNT_DIR}"/boot
+        umount /mnt/boot
     fi
 
-    if mountpoint -q "${MNT_DIR}"; then
+    if mountpoint -q /mnt; then
         info_sub "Unmounting root partition..."
-        umount "${MNT_DIR}"
+        umount /mnt
     fi
 
     set -e
@@ -72,48 +72,23 @@ function partition_mount() {
 
     info_sub "Mounting the root partition..."
     # root
-    mount -o "$DISK_PARTITION_OPTIONS_ROOT" "$DISK_ROOT" "${MNT_DIR}"
+    mount -o "$DISK_PARTITION_OPTIONS_ROOT" "$DISK_ROOT" /mnt
 
     info_sub "Mounting the root partition..."
     # boot
-    mkdir -p "${MNT_DIR}"/boot
-    mount -o "$DISK_PARTITION_OPTIONS_BOOT" "$DISK_PARTITION_BOOT" "${MNT_DIR}"/boot
+    mkdir -p /mnt/boot
+    mount -o "$DISK_PARTITION_OPTIONS_BOOT" "$DISK_PARTITION_BOOT" /mnt/boot
 }
 
 function create_swap_file() {
     info "Creating swap file of size ${SWAP_SIZE}MB..."
 
-    dd if=/dev/zero of="${MNT_DIR}$SWAPFILE" bs=1M count="$SWAP_SIZE" status=progress
-    chmod 600 "${MNT_DIR}${SWAPFILE}"
-    mkswap "${MNT_DIR}${SWAPFILE}"
+    dd if=/dev/zero of="/mnt$SWAPFILE" bs=1M count="$SWAP_SIZE" status=progress
+    chmod 600 "/mnt${SWAPFILE}"
+    mkswap "/mnt${SWAPFILE}"
 
     info_sub "Configuring sysctl for vm.swappiness..."
-    echo "vm.swappiness=10" > "${MNT_DIR}/etc/sysctl.d/99-sysctl.conf"
-}
-
-
-function generate_fstab() {
-    info "Generating fstab entries..."
-
-    genfstab -U "${MNT_DIR}" >> "${MNT_DIR}/etc/fstab"
-
-    cat <<EOT >> "${MNT_DIR}/etc/fstab"
-# efivars
-efivarfs /sys/firmware/efi/efivars efivarfs ro,nosuid,nodev,noexec 0 0
-
-EOT
-
-    if [[ $SWAP_SIZE -ne "0" ]]; then
-        info "Adding swap entry to fstab..."
-        cat <<EOT >> "${MNT_DIR}/etc/fstab"
-# swap
-${SWAPFILE} none swap defaults 0 0
-
-EOT
-    fi
-
-    info "Updating mount options in fstab..."
-    sed -i 's/relatime/noatime/' "${MNT_DIR}/etc/fstab"
+    echo "vm.swappiness=10" > "/mnt/etc/sysctl.d/99-sysctl.conf"
 }
 
 function main() {
@@ -125,8 +100,6 @@ function main() {
     if [[ $SWAP_SIZE -ne "0" ]]; then
         create_swap_file
     fi
-
-    generate_fstab
 
     UUID_BOOT=$(blkid -s UUID -o value "$DISK_PARTITION_BOOT")
     UUID_ROOT=$(blkid -s UUID -o value "$DISK_PARTITION_ROOT")

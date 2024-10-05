@@ -23,7 +23,7 @@ function modify_pacman_conf() {
 
     if [ "$PACKAGES_MULTILIB" == "true" ]; then
         info_sub "Enabling [multilib] repository..."
-        sed -i '/^\[multilib\]/,/^Include/ s/^#//' "${MNT_DIR}/etc/pacman.conf"
+        sed -i '/^\[multilib\]/,/^Include/ s/^#//' "$conf_path"
     fi
 }
 
@@ -43,8 +43,8 @@ function update_mirrorlist() {
 function configure_reflector_chroot() {
     info "Installing reflector in chroot environment..."
 
-    arch-chroot "${MNT_DIR}" pacman -Sy --noconfirm reflector
-    cat <<EOT > "${MNT_DIR}/etc/xdg/reflector/reflector.conf"
+    arch-chroot /mnt pacman -Sy --noconfirm reflector
+    cat <<EOT > "/mnt/etc/xdg/reflector/reflector.conf"
 ${REFLECTOR_COUNTRIES[@]}
 --latest 25
 --age 24
@@ -54,7 +54,7 @@ ${REFLECTOR_COUNTRIES[@]}
 --save /etc/pacman.d/mirrorlist
 EOT
     info_sub "Running reflector to update mirrorlist..."
-    arch-chroot "${MNT_DIR}" reflector "${REFLECTOR_COUNTRIES[@]}" \
+    arch-chroot /mnt reflector "${REFLECTOR_COUNTRIES[@]}" \
         --latest 25 \
         --age 24 \
         --protocol https \
@@ -63,13 +63,13 @@ EOT
         --save /etc/pacman.d/mirrorlist
 
     info_sub "Enabling reflector.timer service..."
-    arch-chroot "${MNT_DIR}" systemctl enable reflector.timer
+    arch-chroot /mnt systemctl enable reflector.timer
 }
 
 function essential_packages_install() {
-    info "Installing essential packages at $MNT_DIR..."
+    info "Installing essential packages at /mnt ..."
 
-    pacstrap "${MNT_DIR}" "$PACKAGES_PACMAN_ESSENTIAL"
+    pacstrap /mnt base base-devel linux linux-firmware
 }
 
 function main() {
@@ -77,7 +77,7 @@ function main() {
     update_mirrorlist
     modify_pacman_conf "/etc/pacman.conf"
     essential_packages_install
-    modify_pacman_conf "${MNT_DIR}/etc/pacman.conf"
+    modify_pacman_conf "/mnt/etc/pacman.conf"
     configure_reflector_chroot
 }
 

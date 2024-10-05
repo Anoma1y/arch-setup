@@ -11,8 +11,6 @@ function packages_aur() {
 }
 
 function main() {
-#    packages_pacman
-#    packages_aur
     echo ""
 }
 

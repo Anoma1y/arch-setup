@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function video_drivers_install() {
-    info "Install video drivers for $DISPLAY_DRIVER..."
+    info "Install video drivers for $GPU_VENDOR..."
 
     local PACKAGES_DRIVER=""
     local PACKAGES_DRIVER_MULTILIB=""

@@ -26,6 +26,19 @@ function pacman_install() {
     fi
 }
 
+function execute_aur() {
+    local COMMAND="$1"
+
+    if [ "$SYSTEM_INSTALLATION" == "true" ]; then
+        # Temporarily enable NOPASSWD for wheel group
+        arch-chroot /mnt sed -i 's/^%wheel ALL=(ALL:ALL) ALL$/%wheel ALL=(ALL:ALL) NOPASSWD: ALL/' /etc/sudoers
+        arch-chroot /mnt bash -c "echo -e \"$USER_PASSWORD\n$USER_PASSWORD\n$USER_PASSWORD\n$USER_PASSWORD\n\" | su $USER_NAME -s /usr/bin/bash -c \"$COMMAND\""
+        arch-chroot /mnt sed -i 's/^%wheel ALL=(ALL:ALL) NOPASSWD: ALL$/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
+    else
+        bash -c "$COMMAND"
+    fi
+}
+
 function aur_install() {
     local ERROR="true"
     local PACKAGES=()
@@ -59,10 +72,17 @@ function aur_install() {
 }
 
 function aur_command_install() {
-    pacman_install "git"
+#    pacman_install "git"
 
     local USER_NAME="$1"
-    local COMMAND="$2"
+    local AUR_PACKAGE="$2"
+    local AUR_TEMP_DIR="/home/$USER_NAME/.aur-temp"
 
-    execute_aur "rm -rf /home/$USER_NAME/.aur-temp && mkdir -p /home/$USER_NAME/.aur-temp/aur && cd /home/$USER_NAME/.aur-temp/aur && git clone https://aur.archlinux.org/${COMMAND}.git && (cd $COMMAND && makepkg -si --noconfirm) && rm -rf /home/$USER_NAME/.aur-temp"
+    echo "USER_NAME: $USER_NAME"
+    echo "AUR_PACKAGE: $AUR_PACKAGE"
+    echo "AUR_TEMP_DIR: $AUR_TEMP_DIR"
+
+#    execute_aur "rm -rf $AUR_TEMP_DIR && mkdir -p $AUR_TEMP_DIR"
+#    execute_aur "cd $AUR_TEMP_DIR && git clone https://aur.archlinux.org/${AUR_PACKAGE}.git && cd $AUR_PACKAGE && makepkg -si --noconfirm"
+#    execute_aur "rm -rf $AUR_TEMP_DIR"
 }

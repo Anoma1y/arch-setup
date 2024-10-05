@@ -4,7 +4,7 @@ function network_manager_install() {
     info "Installing NetworkManager..."
 
     pacman_install "networkmanager"
-    arch-chroot "${MNT_DIR}" systemctl enable NetworkManager.service
+    arch-chroot /mnt systemctl enable NetworkManager.service
 }
 
 function main() {

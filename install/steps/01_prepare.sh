@@ -22,6 +22,10 @@ function validate_variables() {
     check_variables_boolean "DISK_TRIM" "$DISK_TRIM"
     check_variables_value "SWAPFILE" "$SWAPFILE"
 
+    if [[ $SWAPFILE != /* ]]; then
+        SWAPFILE="/$SWAPFILE"
+    fi
+
     check_variables_value "PING_HOSTNAME" "$PING_HOSTNAME"
     check_variables_boolean "PACMAN_PARALLEL_DOWNLOADS" "$PACMAN_PARALLEL_DOWNLOADS"
 
@@ -142,7 +146,10 @@ function main() {
 
     configure_time
     configure_network
-    add_key_server
+
+    pacman -Sy
+
+#    add_key_server
 }
 
 main

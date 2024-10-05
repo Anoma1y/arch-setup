@@ -52,21 +52,26 @@ function execute_sudo() {
     local COMMAND="$1"
 
     if [ "$SYSTEM_INSTALLATION" == "true" ]; then
-        arch-chroot "${MNT_DIR}" bash -c "$COMMAND"
+        arch-chroot /mnt bash -c "$COMMAND"
     else
         sudo bash -c "$COMMAND"
     fi
 }
 
 function execute_user() {
-    local USER_NAME="$1"
-    local COMMAND="$2"
+    local COMMAND="$1"
 
     if [ "$SYSTEM_INSTALLATION" == "true" ]; then
-        arch-chroot "${MNT_DIR}" bash -c "su $USER_NAME -s /usr/bin/bash -c \"$COMMAND\""
+        arch-chroot /mnt bash -c "su $USER_NAME -s /usr/bin/bash -c \"$COMMAND\""
     else
         bash -c "$COMMAND"
     fi
+}
+
+function do_reboot() {
+    umount -R /mnt/boot
+    umount -R /mnt
+    reboot
 }
 
 # Function to check if an element is in an array
