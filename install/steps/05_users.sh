@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function create_home_directories() {
-    local user_home="/mnt/home/${USER_NAME}"
+    local user_home="/home/${USER_NAME}"
     local directories=(
         "Documents"
         "Documents/obsidian"
@@ -18,7 +18,7 @@ function create_home_directories() {
     info "Creating directories in ${user_home}..."
 
     for dir in "${directories[@]}"; do
-        mkdir -p "${user_home}/${dir}"
+        execute_user "mkdir -p ${user_home}/${dir}"
         info_sub "Created ${user_home}/${dir}"
     done
 }

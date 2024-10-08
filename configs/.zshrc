@@ -1,4 +1,5 @@
 export ZSH="$HOME/.oh-my-zsh"
+export TERM=alacritty
 
 source $ZSH/oh-my-zsh.sh
 
