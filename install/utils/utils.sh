@@ -58,6 +58,7 @@ function execute_sudo() {
     fi
 }
 
+# Executes a command as the target user, optionally within a chroot environment
 function execute_user() {
     local COMMAND="$1"
 

@@ -1,11 +1,13 @@
 #!/bin/bash
 
 function i3_install() {
+    info "Installing I3 packages..."
+
     pacman_install "$PACKAGES_PACMAN_I3"
 }
 
 function main() {
-    echo ""
+    i3_install
 }
 
 main

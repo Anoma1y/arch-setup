@@ -16,6 +16,8 @@ function auto_cpufreq_install() {
 function main() {
     if [[ "$DEVICE" == "laptop" ]]; then
         auto_cpufreq_install
+    else
+        info "Skip laptop step"
     fi
 }
 
