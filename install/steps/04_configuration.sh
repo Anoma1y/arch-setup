@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 function configure_systemd_services() {
     info "Enabling fstrim.timer..."
 
@@ -43,9 +45,10 @@ function configure_hosts() {
 
     local full_path="/mnt/etc/hosts"
 
+    info_sub "Creating /etc/hosts backup..."
     cp "$full_path" "$full_path".backup
 
-    read -r -d '' DEFAULT_HOSTS << EOM
+    DEFAULT_HOSTS=$(cat << EOM
 127.0.0.1       localhost
 ::1             localhost ip6-localhost ip6-loopback
 
@@ -55,18 +58,21 @@ ff02::2         ip6-allrouters
 127.0.1.1       $HOSTNAME
 
 EOM
+)
 
     echo "$DEFAULT_HOSTS" > "$full_path"
 
+    info_sub "Adding Docker hosts into /etc/hosts..."
     echo "# Docker" >> "$full_path"
     cat "$CONFS_DIR/hosts/docker" >> "$full_path"
     echo "" >> "$full_path"
 
+    info_sub "Adding M1 hosts into /etc/hosts..."
     echo "# M1" >> "$full_path"
     cat "$CONFS_DIR/hosts/m1" >> "$full_path"
     echo "" >> "$full_path"
 
-    info_sub "$full_path has been updated successfully."
+    info_sub "Hosts file has been updated successfully."
     info_sub "A backup of the original file is saved as $full_path.backup."
 }
 

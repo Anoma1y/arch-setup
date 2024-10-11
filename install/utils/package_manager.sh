@@ -72,7 +72,7 @@ function aur_install() {
 }
 
 function aur_command_install() {
-#    pacman_install "git"
+    pacman_install "git"
 
     local USER_NAME="$1"
     local AUR_PACKAGE="$2"
@@ -82,7 +82,7 @@ function aur_command_install() {
     echo "AUR_PACKAGE: $AUR_PACKAGE"
     echo "AUR_TEMP_DIR: $AUR_TEMP_DIR"
 
-#    execute_aur "rm -rf $AUR_TEMP_DIR && mkdir -p $AUR_TEMP_DIR"
-#    execute_aur "cd $AUR_TEMP_DIR && git clone https://aur.archlinux.org/${AUR_PACKAGE}.git && cd $AUR_PACKAGE && makepkg -si --noconfirm"
-#    execute_aur "rm -rf $AUR_TEMP_DIR"
+    execute_aur "rm -rf $AUR_TEMP_DIR && mkdir -p $AUR_TEMP_DIR"
+    execute_aur "cd $AUR_TEMP_DIR && git clone https://aur.archlinux.org/${AUR_PACKAGE}.git && cd $AUR_PACKAGE && makepkg -si --noconfirm"
+    execute_aur "rm -rf $AUR_TEMP_DIR"
 }

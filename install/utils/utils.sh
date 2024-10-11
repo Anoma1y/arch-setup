@@ -128,3 +128,15 @@ function validate_version() {
         return 1
     fi
 }
+
+function get_latest_github_release() {
+    local repo="$1"
+    local latest_release=$(curl --silent "https://api.github.com/repos/$repo/releases/latest" | grep '"tag_name"' | sed -E 's/.*"([^"]+)".*/\1/')
+
+    if [[ -z "$latest_release" ]]; then
+        echo "Could not fetch the latest release for $repo"
+        return 1
+    fi
+
+    echo "$latest_release"
+}

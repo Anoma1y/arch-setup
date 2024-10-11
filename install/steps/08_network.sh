@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 function network_manager_install() {
     info "Installing NetworkManager..."
 

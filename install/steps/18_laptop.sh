@@ -13,9 +13,17 @@ function auto_cpufreq_install() {
     execute_user "systemctl status auto-cpufreq --no-pager"
 }
 
+function autoconnect_to_wifi() {
+    if [ -n "$WIFI_INTERFACE" ]; then
+        execute_user "nmcli device wifi list"
+        execute_user "nmcli device wifi connect $WIFI_ESSID password $WIFI_KEY"
+    fi
+}
+
 function main() {
     if [[ "$DEVICE" == "laptop" ]]; then
         auto_cpufreq_install
+        autoconnect_to_wifi
     else
         info "Skip laptop step"
     fi

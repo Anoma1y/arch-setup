@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 function shell_user() {
     local user_name="$1"
     local shell_path="$2"

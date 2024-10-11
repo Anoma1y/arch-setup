@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 function create_home_directories() {
     local user_home="/home/${USER_NAME}"
     local directories=(

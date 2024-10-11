@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 function clone_setup_script_repo() {
     local destination_dir="$1"
 
@@ -42,6 +44,12 @@ function create_config_symlinks() {
         execute_user "ln -sf $source_path/$config $output_path/"
         info "Symlinked $config to $output_path/$config"
     done
+
+    if [[ "$DEVICE" == "laptop" ]]; then
+        execute_user "ln -sf $output_path/i3/config_laptop $output_path/i3/config_machine"
+    else
+        execute_user "ln -sf $output_path/i3/config_desktop $output_path/i3/config_machine"
+    fi
 }
 
 function create_xinit_file() {

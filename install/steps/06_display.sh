@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 function video_drivers_install() {
     info "Install video drivers for $GPU_VENDOR..."
 
@@ -40,16 +42,9 @@ function video_drivers_install() {
     fi
 }
 
-function xorg_install() {
-    info "Installing XORG..."
-
-    pacman_install "$PACKAGES_PACMAN_XORG"
-}
-
 function main() {
     if [[ "$DEVICE" != "server" && -n "$GPU_VENDOR" ]]; then
         video_drivers_install
-        xorg_install
     else
         warning "Skip video drivers installation"
     fi

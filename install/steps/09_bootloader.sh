@@ -1,10 +1,12 @@
 #!/bin/bash
 
-HOOKS="base systemd autodetect modconf block filesystems keyboard fsck"
-MODULES=""
+set -e
 
 function mkinitcpio_configuration() {
     info "Mkinitcpio configuration..."
+
+    local HOOKS="base systemd autodetect modconf block filesystems keyboard fsck"
+    local MODULES=""
 
     # Ensure systemd and sd-vconsole are included
     HOOKS=${HOOKS//!systemd/systemd}

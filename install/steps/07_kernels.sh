@@ -1,9 +1,11 @@
 #!/bin/bash
 
+set -e
+
 function kernels_install() {
     info "Installing kernel packages..."
 
-    pacman_install "$PACKAGES_PACMAN_KERNELS"
+    pacman_install "linux-headers"
 }
 
 function main() {

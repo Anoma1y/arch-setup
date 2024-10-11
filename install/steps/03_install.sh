@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 function initialize_pacman_keys() {
     info "Initializing pacman keys..."
 
@@ -31,7 +33,7 @@ function update_mirrorlist() {
     info "Updating mirrorlist..."
 
     pacman -Sy --noconfirm reflector
-    reflector "${REFLECTOR_COUNTRIES[@]}" \
+    reflector --country "${REFLECTOR_COUNTRIES[@]}" \
         --latest 25 \
         --age 24 \
         --protocol https \
@@ -45,7 +47,7 @@ function configure_reflector_chroot() {
 
     arch-chroot /mnt pacman -Sy --noconfirm reflector
     cat <<EOT > "/mnt/etc/xdg/reflector/reflector.conf"
-${REFLECTOR_COUNTRIES[@]}
+--country ${REFLECTOR_COUNTRIES[@]}
 --latest 25
 --age 24
 --protocol https
@@ -54,7 +56,7 @@ ${REFLECTOR_COUNTRIES[@]}
 --save /etc/pacman.d/mirrorlist
 EOT
     info_sub "Running reflector to update mirrorlist..."
-    arch-chroot /mnt reflector "${REFLECTOR_COUNTRIES[@]}" \
+    arch-chroot /mnt reflector --country "${REFLECTOR_COUNTRIES[@]}" \
         --latest 25 \
         --age 24 \
         --protocol https \
