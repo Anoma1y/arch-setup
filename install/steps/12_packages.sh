@@ -4,11 +4,16 @@ set -e
 
 function base_install() {
     pacman_install "$PACKAGES_PACMAN_BASE"
+    pacman_install "$PACKAGES_PACMAN_ADDITIONAL"
     pacman_install "$PACKAGES_PACMAN_COMPRESSION"
 }
 
-function audio_and_video_install() {
+function xorg_install() {
     pacman_install "$PACKAGES_PACMAN_XORG"
+}
+
+function audio_install() {
+    pacman_uninstall "jack2"
     pacman_install "$PACKAGES_PACMAN_AUDIO"
 }
 
@@ -32,12 +37,18 @@ function cli_install() {
     pacman_install "$PACKAGES_PACMAN_CLI_APPLICATION"
 }
 
+function develop_install() {
+    pacman_install "$PACKAGES_PACMAN_DEVELOPER"
+}
+
 function main() {
     base_install
-    audio_and_video_install
+    xorg_install
+    audio_install
     fonts_install
     additional_install
     gui_install
+    develop_install
 }
 
 main

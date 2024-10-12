@@ -4,13 +4,12 @@ function sanitize_variables() {
     info "Sanitizing config variables..."
 
     SWAP_SIZE=$(sanitize_variable "$SWAP_SIZE")
-    AUR_PACKAGE=$(sanitize_variable "$AUR_PACKAGE")
 }
 
 function validate_variables() {
     info "Validating config variables..."
 
-    check_variables_list "DEVICE" "$DEVICE" $DEVICES "true" "true"
+    check_variables_list "DEVICE" "$DEVICE" "$DEVICES" "true" "true"
 
     check_variables_value "USER_NAME" "$USER_NAME"
     check_variables_value "HOSTNAME" "$HOSTNAME"
@@ -29,8 +28,7 @@ function validate_variables() {
     check_variables_value "PING_HOSTNAME" "$PING_HOSTNAME"
     check_variables_boolean "PACMAN_PARALLEL_DOWNLOADS" "$PACMAN_PARALLEL_DOWNLOADS"
 
-    check_variables_list "AUR_PACKAGE" "$AUR_PACKAGE" "yay-bin yay" "true" "true"
-    check_variables_list "AUR_COMMAND" "$AUR_COMMAND" "yay" "true" "true"
+    check_variables_list "AUR_HELPER" "$AUR_HELPER" "$AUR_HELPERS" "true" "true"
 
     check_variables_boolean "LOG_FILE" "$LOG_FILE"
     check_variables_value "LOG_FILE_NAME" "$LOG_FILE_NAME"

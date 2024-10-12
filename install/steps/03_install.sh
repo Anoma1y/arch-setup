@@ -25,7 +25,7 @@ function modify_pacman_conf() {
 
     if [ "$PACKAGES_MULTILIB" == "true" ]; then
         info_sub "Enabling [multilib] repository..."
-        sed -i '/^\[multilib\]/,/^Include/ s/^#//' "$conf_path"
+        sed -z -i 's/#\[multilib\]\n#/[multilib]\n/' "$conf_path"
     fi
 }
 

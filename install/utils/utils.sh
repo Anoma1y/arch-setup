@@ -69,6 +69,26 @@ function execute_user() {
     fi
 }
 
+function create_group() {
+    local group=$1
+    info "Creating group \"$group\"..."
+    execute_sudo "groupadd $group"
+}
+
+function ensure_group() {
+    local group="$1"
+
+    set +e
+
+    execute_user "getent group $group > /dev/null 2>&1"
+    if [[ $? -ne 0 ]]; then
+        info "Creating group \"$group\"..."
+        execute_sudo "groupadd $group"
+    fi
+
+    set -e
+}
+
 function do_reboot() {
     umount -R /mnt/boot
     umount -R /mnt

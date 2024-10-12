@@ -100,11 +100,6 @@ function main() {
     if [[ $SWAP_SIZE -ne "0" ]]; then
         create_swap_file
     fi
-
-    UUID_BOOT=$(blkid -s UUID -o value "$DISK_PARTITION_BOOT")
-    UUID_ROOT=$(blkid -s UUID -o value "$DISK_PARTITION_ROOT")
-    PARTUUID_BOOT=$(blkid -s PARTUUID -o value "$DISK_PARTITION_BOOT")
-    PARTUUID_ROOT=$(blkid -s PARTUUID -o value "$DISK_PARTITION_ROOT")
 }
 
 main

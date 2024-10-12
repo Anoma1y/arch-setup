@@ -32,7 +32,7 @@ function grub_install() {
         --recheck
 
     # Generate the GRUB configuration file
-    arch-chroot /mnt grub-mkconfig -o ${BOOT_DIRECTORY}/grub/grub.cfg
+    arch-chroot /mnt grub-mkconfig -o ${ESP_DIRECTORY}/grub/grub.cfg
 }
 
 function microcode_install() {

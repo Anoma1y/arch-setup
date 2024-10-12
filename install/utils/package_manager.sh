@@ -26,6 +26,39 @@ function pacman_install() {
     fi
 }
 
+function pacman_uninstall() {
+    local ERROR="true"
+    local PACKAGES=()
+    local PACKAGES_UNINSTALL=()
+
+    set +e
+
+    IFS=' ' read -ra PACKAGES <<< "$1"
+
+    for PACKAGE in "${PACKAGES[@]}"; do
+        execute_sudo "pacman -Qi $PACKAGE > /dev/null 2>&1"
+        local PACKAGE_INSTALLED=$?
+        if [ $PACKAGE_INSTALLED == 0 ]; then
+            local PACKAGES_UNINSTALL+=("$PACKAGE")
+        fi
+    done
+
+    if [ -z "${PACKAGES_UNINSTALL[*]}" ]; then
+        return
+    fi
+
+    local COMMAND="pacman -Rdd --noconfirm ${PACKAGES_UNINSTALL[*]}"
+    if execute_sudo "$COMMAND"; then
+        local ERROR="false"
+    fi
+
+    set -e
+
+    if [ "$ERROR" == "true" ]; then
+        exit 1
+    fi
+}
+
 function execute_aur() {
     local COMMAND="$1"
 
@@ -45,16 +78,15 @@ function aur_install() {
 
     set +e
 
-    which "$AUR_COMMAND"
-
-    if [ "$AUR_COMMAND" != "0" ]; then
-        aur_command_install "$USER_NAME" "$AUR_PACKAGE"
+    execute_sudo "which $AUR_HELPER  > /dev/null 2>&1"
+    if [[ $? -ne 0 ]]; then
+        aur_command_install
     fi
 
     IFS=' ' read -ra PACKAGES <<< "$1"
 
     for VARIABLE in {1..5}; do
-        local COMMAND="$AUR_COMMAND -Syu --noconfirm --needed ${PACKAGES[*]}"
+        local COMMAND="$AUR_HELPER -Syu --noconfirm --needed ${PACKAGES[*]}"
 
         if execute_aur "$COMMAND"; then
             local ERROR="false"
@@ -72,17 +104,15 @@ function aur_install() {
 }
 
 function aur_command_install() {
+    info "Installing \"$AUR_HELPER\" AUR helper..."
+
     pacman_install "git"
 
-    local USER_NAME="$1"
-    local AUR_PACKAGE="$2"
-    local AUR_TEMP_DIR="/home/$USER_NAME/.aur-temp"
-
-    echo "USER_NAME: $USER_NAME"
-    echo "AUR_PACKAGE: $AUR_PACKAGE"
-    echo "AUR_TEMP_DIR: $AUR_TEMP_DIR"
-
-    execute_aur "rm -rf $AUR_TEMP_DIR && mkdir -p $AUR_TEMP_DIR"
-    execute_aur "cd $AUR_TEMP_DIR && git clone https://aur.archlinux.org/${AUR_PACKAGE}.git && cd $AUR_PACKAGE && makepkg -si --noconfirm"
-    execute_aur "rm -rf $AUR_TEMP_DIR"
+    execute_user "
+        cd /tmp
+        git clone https://aur.archlinux.org/$AUR_HELPER.git
+        cd $AUR_HELPER
+        makepkg -si --noconfirm
+        rm -rf /tmp/$AUR_HELPER
+    "
 }

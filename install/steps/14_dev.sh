@@ -2,34 +2,36 @@
 
 set -e
 
-function go_install() {
-    info "Installing Golang..."
+function nvm_install() {
+    info "Installing nvm..."
 
-    pacman_install "go"
-}
-
-function nodejs_install() {
-    info "Installing Frontend utils..."
-
-    info_sub "Installing NodeJS..."
-    pacman_install "nodejs"
-
-    info_sub "Installing Nvm..."
     local nvm_version=$(get_latest_github_release "nvm-sh/nvm")
+
     execute_user "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/$nvm_version/install.sh | bash"
 
     info_sub "Installing and setting default specific NodeJS version: $NODE_VERSION..."
-    execute_user "nvm install $NODE_VERSION"
-    execute_user "nvm set default $NODE_VERSION"
+    execute_user "
+        source /home/$USER_NAME/.nvm/nvm.sh
+        nvm install $NODE_VERSION
+        nvm alias default $NODE_VERSION
+    "
 
     info_sub "Installing Yarn..."
-    execute_user "corepack enable"
-    execute_user "corepack prepare yarn@stable --activate"
+    execute_sudo "
+        corepack enable
+        corepack prepare yarn@stable --activate
+    "
+}
+
+function docker_config() {
+    info "Adding user \"$USER_NAME\" to the docker group..."
+
+    execute_sudo "usermod -aG docker $USER_NAME"
 }
 
 function main() {
-    go_install
-    nodejs_install
+    nvm_install
+    docker_config
 }
 
 main

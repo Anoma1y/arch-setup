@@ -9,9 +9,16 @@ function network_manager_install() {
     arch-chroot /mnt systemctl enable NetworkManager.service
 }
 
+function autoconnect_to_wifi() {
+    if [ -n "$WIFI_INTERFACE" ]; then
+        execute_user "nmcli device wifi list"
+        execute_user "nmcli device wifi connect $WIFI_ESSID password $WIFI_KEY"
+    fi
+}
+
 function main() {
     network_manager_install
-    # todo wifi autoconnect
+    autoconnect_to_wifi
 }
 
 main

@@ -3,7 +3,7 @@
 set -e
 
 function create_home_directories() {
-    local user_home="/home/${USER_NAME}"
+    local user_home_path="/home/${USER_NAME}"
     local directories=(
         "Documents"
         "Documents/obsidian"
@@ -17,21 +17,33 @@ function create_home_directories() {
         "Projects"
     )
 
-    info "Creating directories in ${user_home}..."
+    info "Creating directories in ${user_home_path}..."
 
     for dir in "${directories[@]}"; do
-        execute_user "mkdir -p ${user_home}/${dir}"
-        info_sub "Created ${user_home}/${dir}"
+        local full_dir=${user_home_path}/${dir}
+
+        if [[ -d "/mnt/${full_dir}"  ]]; then
+            continue
+        fi
+
+        execute_user "mkdir -p ${full_dir}"
+        info_sub "Folder \"${dir}\" has been created"
     done
 }
 
 function add_user() {
-    local groups=$(IFS=,; echo "${USER_GROUPS[*]}")
+    if arch-chroot "/mnt" id "$USER_NAME" &>/dev/null; then
+        info "User \"${USER_NAME}\" already exists. Skipping user creation..."
+    else
+        local all_groups=("${USER_GROUPS[@]}")
+        all_groups+=("${USER_ADDITIONAL_GROUPS[@]}")
+        local groups=$(IFS=,; echo "${all_groups[*]}")
 
-    info "Adding user ${USER_NAME} to groups: ${groups}..."
+        info "Adding user ${USER_NAME} to groups: ${groups}..."
 
-    arch-chroot "/mnt" useradd -m -G "$groups" -c "$USER_NAME" -s /bin/bash "$USER_NAME"
-    printf "%s\n%s" "$USER_PASSWORD" "$USER_PASSWORD" | arch-chroot "/mnt" passwd "$USER_NAME"
+        arch-chroot "/mnt" useradd -m -G "$groups" -c "$USER_NAME" -s /bin/bash "$USER_NAME"
+        printf "%s\n%s" "$USER_PASSWORD" "$USER_PASSWORD" | arch-chroot "/mnt" passwd "$USER_NAME"
+    fi
 }
 
 function configure_sudoers() {
@@ -40,17 +52,18 @@ function configure_sudoers() {
     arch-chroot "/mnt" sed -i 's/# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
 }
 
-function ensure_additional_groups() {
+function create_additional_groups() {
     for group in "${USER_ADDITIONAL_GROUPS[@]}"; do
-        if ! getent group "$group" > /dev/null 2>&1; then
-            info "Creating group '$group'..."
-            groupadd "$group"
+        if arch-chroot "/mnt" id "$USER_NAME" &>/dev/null; then
+            ensure_group "$group"
+        else
+            create_group "$group"
         fi
     done
 }
 
 function main() {
-    ensure_additional_groups
+    create_additional_groups
     add_user
     configure_sudoers
     create_home_directories
