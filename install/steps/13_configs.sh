@@ -54,6 +54,7 @@ function create_config_symlinks() {
 
 function create_xinit_file() {
     info "Creating xinitrc file..."
+
     execute_user "rsync -a $1/configs/.xinitrc /home/$USER_NAME/.xinitrc"
 }
 
@@ -61,8 +62,8 @@ function git_config() {
     info "Updating git config..."
 
     execute_user "
-        git config user.email \"$GIT_EMAIL\"
-        git config user.name \"$GIT_NAME\"
+        git config --global user.email \"$GIT_EMAIL\"
+        git config --global user.name \"$GIT_NAME\"
     "
 }
 

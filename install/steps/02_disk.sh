@@ -26,12 +26,10 @@ function partition_setup() {
     case "$DISK_TYPE" in
         "sda")
             DISK_PARTITION_BOOT="$(get_disk_name "${DISK_NAME}" "${DISK_PARTITION_BOOT_NUMBER}")"
-            DISK_PARTITION_ROOT="$(get_disk_name "${DISK_NAME}" "${DISK_PARTITION_ROOT_NUMBER}")"
             DISK_ROOT="$(get_disk_name "${DISK_NAME}" "${DISK_PARTITION_ROOT_NUMBER}")"
         ;;
         "nvme")
             DISK_PARTITION_BOOT="$(get_disk_name "${DISK_NAME}" "${DISK_PARTITION_BOOT_NUMBER}")"
-            DISK_PARTITION_ROOT="$(get_disk_name "${DISK_NAME}" "${DISK_PARTITION_ROOT_NUMBER}")"
             DISK_ROOT="$(get_disk_name "${DISK_NAME}" "${DISK_PARTITION_ROOT_NUMBER}")"
         ;;
     esac
