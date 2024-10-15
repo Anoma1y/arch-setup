@@ -11,6 +11,8 @@ function systemd_units() {
 
         execute_sudo "systemctl start $U"
         info_sub "Service $U has been started"
+
+        execute_sudo "systemctl status $U"
     done
 }
 
