@@ -15,6 +15,7 @@ function modify_pacman_conf() {
     local conf_path="$1"
 
     sed -i 's/^#Color/Color/' "$conf_path"
+
     if [ "$PACMAN_PARALLEL_DOWNLOADS" == "true" ]; then
         info_sub "Enabling parallel downloads..."
         sed -i 's/^#ParallelDownloads/ParallelDownloads/' "$conf_path"
@@ -24,7 +25,7 @@ function modify_pacman_conf() {
     fi
 
     if [ "$PACKAGES_MULTILIB" == "true" ]; then
-        info_sub "Enabling [multilib] repository..."
+        info_sub "Enabling Multilib repository..."
         sed -z -i 's/#\[multilib\]\n#/[multilib]\n/' "$conf_path"
     fi
 }
@@ -71,7 +72,11 @@ EOT
 function essential_packages_install() {
     info "Installing essential packages at /mnt ..."
 
-    pacstrap /mnt base base-devel linux linux-firmware
+    pacstrap /mnt \
+        base \
+        base-devel \
+        linux \
+        linux-firmware
 }
 
 function main() {

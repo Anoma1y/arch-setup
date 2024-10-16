@@ -5,7 +5,14 @@ set -e
 function i3_install() {
     info "Installing I3 packages..."
 
-    pacman_install "$PACKAGES_PACMAN_I3"
+    pacman_install "
+        i3-wm \
+        polybar \
+        rofi \
+        xss-lock \
+        i3lock \
+        dunst
+    "
 }
 
 function main() {

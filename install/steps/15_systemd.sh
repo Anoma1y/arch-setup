@@ -2,10 +2,16 @@
 
 set -e
 
-function systemd_units() {
+function systemd_units_enable() {
     info "Enabling/starting systemd services..."
 
-    for U in "${SYSTEMD_UNITS[@]}"; do
+    local systemd_units=(
+        "ufw.service"
+        "bluetooth.service"
+        "docker.service"
+    )
+
+    for U in "${systemd_units[@]}"; do
         execute_sudo "systemctl enable $U"
         info_sub "Service $U has been enabled"
 
@@ -17,7 +23,7 @@ function systemd_units() {
 }
 
 function main() {
-    systemd_units
+    systemd_units_enable
 }
 
 main

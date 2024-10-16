@@ -3,7 +3,7 @@
 set -e
 
 function video_drivers_install() {
-    info "Install video drivers for $GPU_VENDOR..."
+    info "Install video drivers for \"$GPU_VENDOR\"..."
 
     local PACKAGES_DRIVER=""
     local PACKAGES_DRIVER_MULTILIB=""

@@ -24,7 +24,12 @@ function mkinitcpio_configuration() {
 function grub_install() {
     info "Installing and configuring GRUB..."
 
-    pacman_install "efibootmgr grub dosfstools os-prober"
+    pacman_install "
+        efibootmgr \
+        grub \
+        dosfstools \
+        os-prober
+    "
 
     arch-chroot /mnt grub-install --target=x86_64-efi \
         --efi-directory=${ESP_DIRECTORY} \
