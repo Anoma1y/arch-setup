@@ -103,7 +103,7 @@ function aur_command_install() {
 
     pacman_install "${required_packages[@]}"
 
-    execute_user "
+    execute_aur "
         cd /tmp
         git clone https://aur.archlinux.org/$AUR_HELPER.git
         cd $AUR_HELPER
