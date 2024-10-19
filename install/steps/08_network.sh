@@ -5,7 +5,10 @@ set -e
 function network_manager_install() {
     info "Installing NetworkManager..."
 
-    pacman_install "networkmanager"
+    local packages=("networkmanager")
+
+    pacman_install "${packages[@]}"
+
     arch-chroot /mnt systemctl enable NetworkManager.service
 }
 

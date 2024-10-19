@@ -9,7 +9,6 @@ STEPS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/steps"
 function init_configs() {
     source "$CONFS_DIR/_local.conf"
     source "$CONFS_DIR/default.conf"
-    source "$CONFS_DIR/packages.conf"
 }
 
 function init_utils() {

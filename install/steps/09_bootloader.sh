@@ -24,13 +24,14 @@ function mkinitcpio_configuration() {
 function grub_install() {
     info "Installing and configuring GRUB..."
 
-    pacman_install "
-        efibootmgr \
-        grub \
-        dosfstools \
-        os-prober
-    "
+    local packages=(
+       "efibootmgr"
+       "grub"
+       "dosfstools"
+       "os-prober"
+   )
 
+    pacman_install "${packages[@]}"
     arch-chroot /mnt grub-install --target=x86_64-efi \
         --efi-directory=${ESP_DIRECTORY} \
         --bootloader-id=GRUB \
@@ -43,16 +44,20 @@ function grub_install() {
 function microcode_install() {
     info "Installing microcode..."
 
+    local packages=()
+
     case $CPU_VENDOR in
         "intel")
             info_sub "Installing Intel microcode..."
-            pacman_install "intel-ucode"
+            packages+=("intel-ucode")
         ;;
         "amd")
             info_sub "Installing AMD microcode..."
-            pacman_install "amd-ucode"
+            packages+=("amd-ucode")
         ;;
     esac
+
+    pacman_install "${packages[@]}"
 }
 
 function main() {

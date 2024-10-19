@@ -5,7 +5,9 @@ set -e
 function kernels_install() {
     info "Installing kernel packages..."
 
-    pacman_install "linux-headers"
+    local packages=("linux-headers")
+
+    pacman_install "${packages[@]}"
 }
 
 function main() {

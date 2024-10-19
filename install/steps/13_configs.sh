@@ -56,6 +56,7 @@ function create_xinit_file() {
     info "Creating xinitrc file..."
 
     execute_user "rsync -a $1/configs/.xinitrc /home/$USER_NAME/.xinitrc"
+    execute_sudo "chmod +x /home/$USER_NAME/.xinitrc"
 }
 
 function git_config() {
@@ -70,7 +71,12 @@ function git_config() {
 function main() {
     local repo_output_dir="/home/$USER_NAME/Projects/$SETUP_SCRIPT_REPO"
 
-    pacman_install "git rsync"
+    local packages=(
+        "git"
+        "rsync"
+    )
+
+    pacman_install "${packages[@]}"
 
     clone_setup_script_repo "$repo_output_dir"
     create_config_symlinks "$repo_output_dir"

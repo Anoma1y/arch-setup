@@ -45,13 +45,14 @@ function oh_my_zsh_install() {
 
 function main() {
     local shell_path="/usr/bin/zsh"
+    local packages=(
+        "git"
+        "wget"
+        "alacritty"
+        "zsh"
+    )
 
-    pacman_install "
-        git \
-        wget \
-        alacritty \
-        zsh
-    "
+    pacman_install "${packages[@]}"
 
     shell_user "root" $shell_path
     shell_user "$USER_NAME" $shell_path

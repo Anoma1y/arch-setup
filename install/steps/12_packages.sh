@@ -3,141 +3,172 @@
 set -e
 
 function base_install() {
-    pacman_install "
-        nano \
-        git \
-        bind \
-        cmake \
-        dmidecode \
-        lsof \
-        ntp \
-        openssh \
-        traceroute \
-        net-tools \
-        tree \
-        ufw \
-        wget \
-        curl \
-        rsync \
-        fastfetch \
-        ncdu \
-        man-db \
-        man-pages
-    "
-    pacman_install "ffmpeg"
-    pacman_install "
-        unzip \
-        unrar \
-        zip \
-        p7zip
-    "
+    local packages=(
+        "nano"
+        "vim"
+        "git"
+        "bind"
+        "cmake"
+        "dmidecode"
+        "lsof"
+        "ntp"
+        "openssh"
+        "traceroute"
+        "net-tools"
+        "tree"
+        "ufw"
+        "wget"
+        "curl"
+        "rsync"
+        "fastfetch"
+        "ncdu"
+        "man-db"
+        "man-pages"
+        "ranger"
+        "ffmpeg"
+        "unzip"
+        "unrar"
+        "zip"
+        "p7zip"
+    )
+
+    pacman_install "${packages[@]}"
 }
 
 function xorg_install() {
     info "Installing XORG packages..."
 
-    pacman_install "
-        xorg \
-        xorg-apps \
-        xorg-drivers \
-        xorg-server \
-        xorg-xinit \
-        xorg-xkill \
-        xorg-xrandr
-    "
+    local packages=(
+        "xorg"
+        "xorg-apps"
+        "xorg-xauth"
+        "xorg-drivers"
+        "xorg-server"
+        "xorg-xinit"
+        "xorg-xkill"
+        "xorg-xrandr"
+    )
+
+    pacman_install "${packages[@]}"
 }
 
 function audio_install() {
     info "Installing audio drivers and utils..."
 
-    pacman_uninstall "jack2"
-    pacman_install "
-        pipewire-alsa \
-        pipewire-jack \
-        pipewire-pulse \
-        lib32-pipewire \
-        lib32-pipewire-jack \
-        wireplumber \
-        alsa-plugins \
-        alsa-utils \
-        pavucontrol
-    "
+    local redundant_packages=("jack2")
+    local packages=(
+        "pipewire-alsa"
+        "pipewire-jack"
+        "pipewire-pulse"
+        "lib32-pipewire"
+        "lib32-pipewire-jack"
+        "wireplumber"
+        "alsa-plugins"
+        "alsa-utils"
+        "pavucontrol"
+    )
+
+    pacman_uninstall "${redundant_packages[@]}"
+    pacman_install "${packages[@]}"
 }
 
 function fonts_install() {
     info "Installing fonts..."
 
-    pacman_install "
-        powerline-fonts \
-        terminus-font \
-        ttf-droid \
-        ttf-firacode-nerd \
-        ttf-fira-code \
-        ttf-liberation \
-        ttf-roboto \
-        ttf-jetbrains-mono \
-        ttf-font-awesome
-    "
-    aur_install "noto-fonts-emoji"
+    local packages=(
+        "powerline-fonts"
+        "terminus-font"
+        "ttf-droid"
+        "ttf-firacode-nerd"
+        "ttf-fira-code"
+        "ttf-liberation"
+        "ttf-roboto"
+        "ttf-jetbrains-mono"
+        "ttf-font-awesome"
+    )
+    local aur_packages=("noto-fonts-emoji")
+
+    pacman_install "${packages[@]}"
+    aur_install "${aur_packages[@]}"
 }
 
 function additional_install() {
-    info "Installing bluetooth drivers and utils..."
-    pacman_install "
-        bluez \
-        bluez-utils \
-        blueberry
-    "
+    info "Installing additional packages..."
 
-    info "Installing printer drivers and utils..."
-    pacman_install "
-        cups \
-        cups-pdf \
-        ghostscript \
-        system-config-printer
-    "
+    local bluetooth_packages=(
+        "bluez"
+        "bluez-utils"
+        "blueberry"
+    )
+    local printer_packages=(
+        "cups"
+        "cups-pdf"
+        "ghostscript"
+        "system-config-printer"
+    )
+    local usb_packages=(
+        "usbutils"
+    )
 
-    info "Installing USB drivers and utils..."
-    pacman_install "usbutils"
+    info_sub "Installing bluetooth drivers and utils..."
+    pacman_install "${bluetooth_packages[@]}"
+
+    info_sub "Installing printer drivers and utils..."
+    pacman_install "${printer_packages[@]}"
+
+    info_sub "Installing USB drivers and utils..."
+    pacman_install "${usb_packages[@]}"
+
 }
 
 function gui_install() {
     info "Installing GUI applications..."
 
-    pacman_install "
-        telegram-desktop \
-        discord \
-        mpv \
-        flameshot \
-        gnome-calculator \
-        dunst \
-        filezilla \
-        firefox \
-        obs-studio \
-        libreoffice-still
-    "
-    aur_install "google-chrome"
+    local packages=(
+        "telegram-desktop"
+        "discord"
+        "mpv"
+        "flameshot"
+        "gnome-calculator"
+        "dunst"
+        "filezilla"
+        "firefox"
+        "obs-studio"
+        "libreoffice-still"
+    )
+    local aur_packages=(
+        "google-chrome"
+    )
+
+    pacman_install "${packages[@]}"
+    aur_install "${aur_packages[@]}"
 }
 
 function develop_install() {
     info "Installing develop utils..."
 
-    pacman_install "
-        python \
-        go \
-        docker \
-        docker-compose \
-        nodejs
-    "
+    local packages=(
+        "python"
+        "go"
+        "docker"
+        "docker-compose"
+        "nodejs"
+    )
+
+    pacman_install "${packages[@]}"
 }
 
 function main() {
     base_install
-    xorg_install
-    audio_install
     fonts_install
-    additional_install
-    gui_install
+
+    if [[ "$DEVICE" != "server" ]]; then
+        audio_install
+        xorg_install
+        gui_install
+        additional_install
+    fi
+
     develop_install
 }
 

@@ -11,8 +11,8 @@ function configure_systemd_services() {
 function configure_time() {
     info "Configuring timezone..."
 
-    arch-chroot /mnt ln -sf "${TIMEZONE}" /etc/localtime
-    arch-chroot /mnt hwclock --systohc
+    arch-chroot /mnt ln -sf "/usr/share/zoneinfo/${TIMEZONE}" /etc/localtime
+    arch-chroot /mnt hwclock --systohc # sync hardware clock with system clock
 }
 
 function configure_locale() {
@@ -81,7 +81,6 @@ function set_root_password() {
 
     echo -e "${ROOT_PASSWORD}\n${ROOT_PASSWORD}" | arch-chroot /mnt passwd
 }
-
 
 function generate_fstab() {
     info "Generating fstab entries..."

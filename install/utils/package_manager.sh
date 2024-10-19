@@ -2,15 +2,12 @@
 
 function pacman_install() {
     local ERROR="true"
-    local PACKAGES=()
+    local PACKAGES=("$@")
 
     set +e
 
-    IFS=' ' read -ra PACKAGES <<< "$1"
-
     for VARIABLE in {1..5}; do
         local COMMAND="pacman -Syu --noconfirm --needed ${PACKAGES[*]}"
-
         if execute_sudo "$COMMAND"; then
             local ERROR="false"
             break
@@ -28,12 +25,10 @@ function pacman_install() {
 
 function pacman_uninstall() {
     local ERROR="true"
-    local PACKAGES=()
+    local PACKAGES=("$@")
     local PACKAGES_UNINSTALL=()
 
     set +e
-
-    IFS=' ' read -ra PACKAGES <<< "$1"
 
     for PACKAGE in "${PACKAGES[@]}"; do
         execute_sudo "pacman -Qi $PACKAGE > /dev/null 2>&1"
@@ -74,7 +69,7 @@ function execute_aur() {
 
 function aur_install() {
     local ERROR="true"
-    local PACKAGES=()
+    local PACKAGES=("$@")
 
     set +e
 
@@ -82,8 +77,6 @@ function aur_install() {
     if [[ $? -ne 0 ]]; then
         aur_command_install
     fi
-
-    IFS=' ' read -ra PACKAGES <<< "$1"
 
     for VARIABLE in {1..5}; do
         local COMMAND="$AUR_HELPER -Syu --noconfirm --needed ${PACKAGES[*]}"
@@ -106,7 +99,9 @@ function aur_install() {
 function aur_command_install() {
     info "Installing \"$AUR_HELPER\" AUR helper..."
 
-    pacman_install "git"
+    local required_packages=("git")
+
+    pacman_install "${required_packages[@]}"
 
     execute_user "
         cd /tmp

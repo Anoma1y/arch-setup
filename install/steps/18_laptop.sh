@@ -5,7 +5,12 @@ set -e
 function auto_cpufreq_install() {
     info "Installing auto-cpufreq"
 
-    pacman_install "git python-pip"
+    local required_packages=(
+        "git"
+        "python-pip"
+    )
+
+    pacman_install "${required_packages[@]}"
 
     execute_user "
         git clone https://github.com/AdnanHodzic/auto-cpufreq.git ~/auto-cpufreq

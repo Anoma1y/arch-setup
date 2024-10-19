@@ -24,10 +24,8 @@ function modify_pacman_conf() {
         sed -i 's/^#ParallelDownloads.*/#ParallelDownloads\nDisableDownloadTimeout/' "$conf_path"
     fi
 
-    if [ "$PACKAGES_MULTILIB" == "true" ]; then
-        info_sub "Enabling Multilib repository..."
-        sed -z -i 's/#\[multilib\]\n#/[multilib]\n/' "$conf_path"
-    fi
+    info_sub "Enabling Multilib repository..."
+    sed -z -i 's/#\[multilib\]\n#/[multilib]\n/' "$conf_path"
 }
 
 function update_mirrorlist() {
