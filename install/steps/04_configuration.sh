@@ -9,7 +9,7 @@ function configure_systemd_services() {
 }
 
 function configure_time() {
-    info "Configuring timezone..."
+    info "Configuring timezone to \"$TIMEZONE\"..."
 
     arch-chroot /mnt ln -sf "/usr/share/zoneinfo/${TIMEZONE}" /etc/localtime
     arch-chroot /mnt hwclock --systohc # sync hardware clock with system clock
@@ -18,7 +18,7 @@ function configure_time() {
 function configure_locale() {
     info "Configure locale..."
 
-    info_sub "Configuring locale.gen..."
+    info_sub "Updating locale.gen..."
     for LOCALE in "${LOCALES[@]}"; do
         sed -i "s/^#${LOCALE}/${LOCALE}/" /etc/locale.gen
         sed -i "s/^#${LOCALE}/${LOCALE}/" "/mnt/etc/locale.gen"
@@ -35,20 +35,42 @@ function configure_locale() {
 }
 
 function configure_hostname() {
-    info "Setting hostname..."
+    info "Setting hostname to \"$HOSTNAME\"..."
 
     echo "${HOSTNAME}" > "/mnt/etc/hostname"
 }
+
+function add_hosts_entries() {
+    local title="$1"
+    local filename="$2"
+    local full_path="$3"
+
+    local filepath="$CONFS_DIR/hosts/$filename"
+
+    if [[ -f "$filepath" ]]; then
+        info_sub "Adding $title hosts..."
+        {
+            echo "# $title"
+            cat "$filepath"
+            echo ""
+        } >> "$full_path"
+    else
+        info_sub "Hosts file $filepath not found, skipping $title hosts."
+    fi
+}
+
 
 function configure_hosts() {
     info "Setting hosts..."
 
     local full_path="/mnt/etc/hosts"
+    local backup_file_name="$full_path".backup
 
     info_sub "Creating /etc/hosts backup..."
-    cp "$full_path" "$full_path".backup
+    cp "$full_path" "$backup_file_name"
 
-    DEFAULT_HOSTS=$(cat << EOM
+    info_sub "Writing default hosts entries..."
+    cat > "$full_path" <<EOL
 127.0.0.1       localhost
 ::1             localhost ip6-localhost ip6-loopback
 
@@ -56,24 +78,16 @@ ff02::1         ip6-allnodes
 ff02::2         ip6-allrouters
 
 127.0.1.1       $HOSTNAME
-
-EOM
-)
+EOL
 
     echo "$DEFAULT_HOSTS" > "$full_path"
 
-    info_sub "Adding Docker hosts into /etc/hosts..."
-    echo "# Docker" >> "$full_path"
-    cat "$CONFS_DIR/hosts/docker" >> "$full_path"
-    echo "" >> "$full_path"
-
-    info_sub "Adding M1 hosts into /etc/hosts..."
-    echo "# M1" >> "$full_path"
-    cat "$CONFS_DIR/hosts/m1" >> "$full_path"
-    echo "" >> "$full_path"
+    # Add custom hosts entries
+    add_hosts_entries "Docker" "docker" "$full_path"
+    add_hosts_entries "M1" "m1" "$full_path"
 
     info_sub "Hosts file has been updated successfully."
-    info_sub "A backup of the original file is saved as $full_path.backup."
+    info_sub "A backup of the original file is saved as \"$backup_file_name\""
 }
 
 function set_root_password() {

@@ -18,28 +18,29 @@ function password_prompt() {
     fi
 }
 
-# todo
 function disk_prompt() {
-    lsblk
-    local disks=($(lsblk -dpnoNAME | grep -E "^/dev/(sd|nvme|vd)"))
-
+    disks=($(lsblk -dpno NAME | grep -E "^/dev/(sd|nvme|vd|mmcblk)"))
     if [ ${#disks[@]} -eq 0 ]; then
-        echo "No suitable disks found. Exiting."
+        danger "No suitable disks found. Exiting."
         exit 1
     fi
 
-    info 'Select the number corresponding to the disk (e.g., 1):'
-
-    PS3="Enter the disk number (1-${#disks[@]}): "
-
-    select entry in "${disks[@]}"; do
-        if [[ -n "$entry" ]]; then
-            disk="$entry"
-            warning "Arch Linux will be installed on the following disk: ${disk}"
-            DISK_NAME="${disk}"
-            break
-        else
-            echo "Invalid selection. Please enter a number between 1 and ${#disks[@]}."
-        fi
+    info_sub "Available disks:"
+    for i in "${!disks[@]}"; do
+        disk="${disks[$i]}"
+        size=$(lsblk -dn -o SIZE "$disk")
+        model=$(lsblk -dn -o MODEL "$disk")
+        echo "$((i+1))) $disk - $size - $model"
     done
+
+    echo
+    read -rp "Enter the disk number to install Arch Linux on (e.g., 1): " disk_number
+    if [[ "$disk_number" -ge 1 && "$disk_number" -le "${#disks[@]}" ]]; then
+        DISK_NAME="${disks[$((disk_number-1))]}"
+        success "Arch Linux will be installed on the following disk: $DISK_NAME"
+    else
+        danger "Invalid selection. Enter a number between 1 and ${#disks[@]}."
+        exit 1
+    fi
 }
+

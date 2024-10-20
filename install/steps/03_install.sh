@@ -10,10 +10,11 @@ function initialize_pacman_keys() {
 }
 
 function modify_pacman_conf() {
-    info "Modifying pacman configuration at $1..."
-
     local conf_path="$1"
 
+    info "Modifying pacman configuration at $conf_path..."
+
+    # Enable Color
     sed -i 's/^#Color/Color/' "$conf_path"
 
     if [ "$PACMAN_PARALLEL_DOWNLOADS" == "true" ]; then
@@ -68,13 +69,9 @@ EOT
 }
 
 function essential_packages_install() {
-    info "Installing essential packages at /mnt ..."
+    info "Installing essential packages to /mnt ..."
 
-    pacstrap /mnt \
-        base \
-        base-devel \
-        linux \
-        linux-firmware
+    pacstrap /mnt base base-devel linux linux-firmware
 }
 
 function main() {
