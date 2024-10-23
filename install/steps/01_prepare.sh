@@ -112,90 +112,13 @@ function add_key_server() {
     echo "keyserver hkp://keyserver.ubuntu.com" >> /etc/pacman.d/gnupg/gpg.conf
 }
 
-function connect_wifi() {
-    info "Trying to connect to WiFi network..."
-
-    if ! command -v iwctl >/dev/null 2>&1; then
-        danger "iwctl is not available. Ensure iwd is installed"
-        exit 1
-    fi
-
-    info_sub "Available WiFi devices:"
-
-    mapfile -t devices < <(iwctl device list | awk '/station/{print $2}')
-    if [ ${#devices[@]} -eq 0 ]; then
-        danger "No WiFi devices found. Exiting."
-        exit 1
-    fi
-
-    for i in "${!devices[@]}"; do
-        echo "$((i+1))) ${devices[$i]}"
-    done
-
-    read -rp "Enter the number of the WiFi device to use (e.g., 1): " device_number
-    if [[ "$device_number" -ge 1 && "$device_number" -le "${#devices[@]}" ]]; then
-        WIFI_INTERFACE="${devices[$((device_number-1))]}"
-        info_sub "Selected device: $WIFI_INTERFACE"
-    else
-        danger "Invalid selection."
-        exit 1
-    fi
-
-    info_sub "Scanning for available WiFi networks..."
-    iwctl station "$WIFI_INTERFACE" scan
-
-    info_sub "Available WiFi networks:"
-    mapfile -t networks < <(iwctl station "$WIFI_INTERFACE" get-networks | sed -e '1,4 d' -e $'s/\e\\[[0-9;]*m>*//g' | awk 'NF{NF-=2}1 && NF' | sort -u)
-    if [ ${#networks[@]} -eq 0 ]; then
-        danger "No WiFi networks found."
-        exit 1
-    fi
-
-    for i in "${!networks[@]}"; do
-        echo "$((i+1))) ${networks[$i]}"
-    done
-
-    read -rp "Enter the number of the WiFi network to connect to (e.g., 1): " network_number
-    if [[ "$network_number" -ge 1 && "$network_number" -le "${#networks[@]}" ]]; then
-        WIFI_ESSID="${networks[$((network_number-1))]}"
-        info_sub "Selected network: $WIFI_ESSID"
-    else
-        danger "Invalid selection."
-        exit 1
-    fi
-
-    network_info=$(iwctl station "$WIFI_INTERFACE" get-networks | grep "$WIFI_ESSID")
-    if echo "$network_info" | grep -q "psk"; then
-        read -rsp "Enter WiFi passphrase for $WIFI_ESSID: " WIFI_PASSPHRASE
-        echo
-    else
-        WIFI_PASSPHRASE=""
-    fi
-
-    info_sub "Connecting to $WIFI_ESSID..."
-    if [ -n "$WIFI_PASSPHRASE" ]; then
-        iwctl --passphrase "$WIFI_PASSPHRASE" station "$WIFI_INTERFACE" connect "$WIFI_ESSID"
-    else
-        iwctl station "$WIFI_INTERFACE" connect "$WIFI_ESSID"
-    fi
-
-    info_sub "Verifying internet connection..."
-    if ping -c 1 -i 2 -W 5 -w 30 "$PING_HOSTNAME"; then
-        success "Successfully connected to the internet"
-    else
-        danger "Failed to establish an internet connection"
-        exit 1
-    fi
-}
-
 function check_internet_connection() {
     info "Checking internet connection..."
 
     if ping -c 1 -i 2 -W 5 -w 30 "$PING_HOSTNAME"; then
         success "Internet connection detected"
     else
-        warning "No internet connection detected"
-        connect_wifi
+        danger "No internet connection detected"
     fi
 }
 
