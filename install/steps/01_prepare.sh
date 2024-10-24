@@ -10,10 +10,6 @@ function sanitize_variables() {
 function validate_variables() {
     info "Validating config variables..."
 
-    check_variables_list "DEVICE" "$DEVICE" "$DEVICES" "true" "true"
-
-    check_variables_value "USER_NAME" "$USER_NAME"
-    check_variables_value "HOSTNAME" "$HOSTNAME"
     check_variables_value "TIMEZONE" "$TIMEZONE"
     check_variables_value "LOCALES" "$LOCALES"
     check_variables_value "LOCALE_CONF" "$LOCALE_CONF"
@@ -28,10 +24,13 @@ function validate_variables() {
     check_variables_value "PING_HOSTNAME" "$PING_HOSTNAME"
     check_variables_boolean "PACMAN_PARALLEL_DOWNLOADS" "$PACMAN_PARALLEL_DOWNLOADS"
 
-    check_variables_list "AUR_HELPER" "$AUR_HELPER" "$AUR_HELPERS" "true" "true"
+    check_variables_list "AUR_HELPER" "$AUR_HELPER" AUR_HELPERS[@] "true" "true"
 }
 
 function validate_prompt_variables() {
+    check_variables_list "DEVICE" "$DEVICE" DEVICES[@] "true" "true"
+    check_variables_value "USER_NAME" "$USER_NAME"
+    check_variables_value "HOSTNAME" "$HOSTNAME"
     check_variables_value "USER_PASSWORD" "$USER_PASSWORD"
     check_variables_value "ROOT_PASSWORD" "$ROOT_PASSWORD"
     check_variables_value "DISK_NAME" "$DISK_NAME"
@@ -75,17 +74,20 @@ function collect_variables() {
 function prompts() {
     info "Starting prompts..."
 
-    if [ -z "$ROOT_PASSWORD" ]; then
-        password_prompt "ROOT" "ROOT_PASSWORD"
-    fi
+    password_prompt "ROOT" "ROOT_PASSWORD"
 
-    if [ -z "$USER_PASSWORD" ]; then
-        password_prompt "USER" "USER_PASSWORD"
-    fi
+    string_prompt USER_NAME "ayaya"
+    success "User name set to: \"$USER_NAME\""
 
-    if [ -z "$disk_prompt" ]; then
-        disk_prompt
-    fi
+    password_prompt "USER" "USER_PASSWORD"
+
+    string_prompt HOSTNAME "yukari"
+    success "Hostname set to: \"$HOSTNAME\""
+
+    select_option DEVICE "${DEVICES[@]}" 1
+    success "Device selected: \"$DEVICE\""
+
+    disk_prompt
 
     if [ "$SKIP_START_WARNING" == "false" ]; then
         warning "WARNING: This operation will erase all data on '$DISK_NAME'."
@@ -129,15 +131,15 @@ function main() {
     prompts
 
     validate_prompt_variables
-    collect_variables
-
-    check_internet_connection
-
-    configure_time
-
-    pacman -Sy
-
-    add_key_server
+#    collect_variables
+#
+#    check_internet_connection
+#
+#    configure_time
+#
+#    pacman -Sy
+#
+#    add_key_server
 }
 
 main

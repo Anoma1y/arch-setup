@@ -30,15 +30,20 @@ function check_variables_value() {
 function check_variables_boolean() {
     local NAME="$1"
     local VALUE="$2"
-    check_variables_list "$NAME" "$VALUE" "true false" "true" "true"
+
+    local list=("true" "false")
+
+    check_variables_list "$NAME" "$VALUE" list[@] "true" "true"
 }
 
 function check_variables_list() {
     local NAME="$1"
     local VALUE="$2"
-    local VALUES="$3"
+    local VALUES_ARRAY=("${!3}")
     local REQUIRED="$4"
     local SINGLE="$5"
+
+    local VALUES="${VALUES_ARRAY[*]}"
 
     if [ "$REQUIRED" == "" ] || [ "$REQUIRED" == "true" ]; then
         check_variables_value "$NAME" "$VALUE"

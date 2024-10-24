@@ -12,8 +12,8 @@ function auto_cpufreq_install() {
 
     pacman_install "${required_packages[@]}"
 
-    execute_user "
-        git clone https://github.com/AdnanHodzic/auto-cpufreq.git ~/auto-cpufreq
+    execute_user "git clone https://github.com/AdnanHodzic/auto-cpufreq.git ~/auto-cpufreq"
+    execute_sudo "
         cd ~/auto-cpufreq
         ./auto-cpufreq-installer
         systemctl enable auto-cpufreq

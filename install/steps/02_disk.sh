@@ -68,11 +68,11 @@ function format_disk() {
 function partition_mount() {
     info "Mounting partitions..."
 
-    info_sub "Mounting the root partition..."
+    info_sub "Mounting the ROOT partition..."
     # root
     mount -o "$DISK_PARTITION_OPTIONS_ROOT" "$DISK_ROOT" /mnt
 
-    info_sub "Mounting the root partition..."
+    info_sub "Mounting the BOOT partition..."
     # boot
     mkdir -p /mnt/boot
     mount -o "$DISK_PARTITION_OPTIONS_BOOT" "$DISK_PARTITION_BOOT" /mnt/boot

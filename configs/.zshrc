@@ -1,8 +1,6 @@
 export ZSH="$HOME/.oh-my-zsh"
 export TERM=alacritty
 
-source $ZSH/oh-my-zsh.sh
-
 fpath+=($HOME/.zsh/pure)
 autoload -U promptinit; promptinit
 prompt pure
@@ -20,5 +18,5 @@ plugins=(
 # initialize the completion system
 autoload -Uz compinit && compinit
 
-source "$HOME/.oh-my-zsh/oh-my-zsh.sh"
+source "$ZSH/oh-my-zsh.sh"
 source "$HOME/.config/bash/_init.sh"
