@@ -4,3 +4,5 @@ vscode
 configs/.config/i3/config_machine
 
 +.log
+
+scripts/backup/backup_config.yml

@@ -19,29 +19,32 @@ function password_prompt() {
 }
 
 function disk_prompt() {
-    disks=($(lsblk -dpno NAME | grep -E "^/dev/(sd|nvme|vd|mmcblk)"))
-    if [ ${#disks[@]} -eq 0 ]; then
-        danger "No suitable disks found. Exiting."
-        exit 1
-    fi
+    while true; do
+        disks=($(lsblk -dpno NAME | grep -E "^/dev/(sd|nvme|vd|mmcblk)"))
+        if [ ${#disks[@]} -eq 0 ]; then
+            danger "No suitable disks found. Exiting."
+            continue
+        fi
 
-    info_sub "Available disks:"
-    for i in "${!disks[@]}"; do
-        disk="${disks[$i]}"
-        size=$(lsblk -dn -o SIZE "$disk")
-        model=$(lsblk -dn -o MODEL "$disk")
-        echo "$((i+1))) $disk - $size - $model"
+        info_sub "Available disks:"
+        for i in "${!disks[@]}"; do
+            disk="${disks[$i]}"
+            size=$(lsblk -dn -o SIZE "$disk")
+            model=$(lsblk -dn -o MODEL "$disk")
+            echo "$((i+1))) $disk - $size - $model"
+        done
+
+        echo
+        read -rp "Enter the disk number to install Arch Linux on (e.g., 1): " disk_number
+        if [[ "$disk_number" -ge 1 && "$disk_number" -le "${#disks[@]}" ]]; then
+            DISK_NAME="${disks[$((disk_number-1))]}"
+            success "Arch Linux will be installed on the following disk: $DISK_NAME"
+            break
+        else
+            danger "Invalid selection. Enter a number between 1 and ${#disks[@]}."
+            # Loop continues for another retry
+        fi
     done
-
-    echo
-    read -rp "Enter the disk number to install Arch Linux on (e.g., 1): " disk_number
-    if [[ "$disk_number" -ge 1 && "$disk_number" -le "${#disks[@]}" ]]; then
-        DISK_NAME="${disks[$((disk_number-1))]}"
-        success "Arch Linux will be installed on the following disk: $DISK_NAME"
-    else
-        danger "Invalid selection. Enter a number between 1 and ${#disks[@]}."
-        exit 1
-    fi
 }
 
 # Function to prompt user for input
@@ -105,7 +108,7 @@ function select_option() {
 
         if [[ -z "$user_input" && "$default_index" -ge 1 && "$default_index" -le "$num_options" ]]; then
             user_input="$default_index"
-            danger "No input provided. Using default option $user_input."
+            warning "No input provided. Using default option $user_input."
         fi
 
         if [[ "$user_input" =~ ^[1-9][0-9]*$ ]] && (( user_input >= 1 && user_input <= num_options )); then

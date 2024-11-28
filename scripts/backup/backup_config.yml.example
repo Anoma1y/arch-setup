@@ -1,0 +1,7 @@
+# Target backup directory (ensure it's mounted if it's a device)
+target: /dev/sdaX
+
+# List of sources to backup with their respective destination paths
+sources:
+  - source: ~/Images
+    destination: /Images

@@ -17,6 +17,7 @@ function base_install() {
         "net-tools"
         "tree"
         "ufw"
+        "yq"
         "wget"
         "curl"
         "rsync"

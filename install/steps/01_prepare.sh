@@ -131,15 +131,15 @@ function main() {
     prompts
 
     validate_prompt_variables
-#    collect_variables
-#
-#    check_internet_connection
-#
-#    configure_time
-#
-#    pacman -Sy
-#
-#    add_key_server
+    collect_variables
+
+    check_internet_connection
+
+    configure_time
+
+    pacman -Sy
+
+    add_key_server
 }
 
 main
