@@ -5,7 +5,11 @@ set -e
 function initialize_pacman_keys() {
     info "Initializing pacman keys..."
 
-    pacman-key --init
+    if ! pacman-key --init; then
+        danger "Failed to initialize pacman keys."
+        exit 1
+    fi
+
     pacman-key --populate
 }
 
