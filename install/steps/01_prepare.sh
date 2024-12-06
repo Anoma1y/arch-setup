@@ -4,7 +4,11 @@ function sanitize_variables() {
     info "Sanitizing config variables..."
 
     SWAP_SIZE=$(sanitize_variable "$SWAP_SIZE")
-    # todo add size format check
+
+    if ! [[ "$SWAP_SIZE" =~ ^[0-9]+$ ]]; then
+        danger "SWAP_SIZE must be a numeric value."
+        exit 1
+    fi
 }
 
 function validate_variables() {
