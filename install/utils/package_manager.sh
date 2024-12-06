@@ -9,7 +9,7 @@ function pacman_install() {
     for VARIABLE in {1..5}; do
         local COMMAND="pacman -Syu --noconfirm --needed ${PACKAGES[*]}"
         if execute_sudo "$COMMAND"; then
-            local ERROR="false"
+            ERROR="false"
             break
         else
             sleep 10
@@ -44,7 +44,7 @@ function pacman_uninstall() {
 
     local COMMAND="pacman -Rdd --noconfirm ${PACKAGES_UNINSTALL[*]}"
     if execute_sudo "$COMMAND"; then
-        local ERROR="false"
+        ERROR="false"
     fi
 
     set -e
