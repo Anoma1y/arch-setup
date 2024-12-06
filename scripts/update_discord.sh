@@ -25,7 +25,7 @@ else
 fi
 
 echo_info "Downloading the latest version of Discord..."
-eval $DOWNLOADER
+eval "$DOWNLOADER"
 
 if [ ! -f "$DOWNLOAD_FILE" ]; then
     echo_error "Download failed. The file $DOWNLOAD_FILE does not exist."
