@@ -33,6 +33,10 @@ function video_drivers_install() {
             PACKAGES_HARDWARE_ACCELERATION=("libva-mesa-driver")
             PACKAGES_HARDWARE_ACCELERATION_MULTILIB=("lib32-libva-mesa-driver")
             ;;
+        *)
+            warning "GPU vendor '$GPU_VENDOR' is not recognized. Skipping video drivers installation..."
+            return
+            ;;
     esac
 
     # Combine all arrays for base package installation
