@@ -29,6 +29,11 @@ function validate_variables() {
     check_variables_boolean "PACMAN_PARALLEL_DOWNLOADS" "$PACMAN_PARALLEL_DOWNLOADS"
 
     check_variables_list "AUR_HELPER" "$AUR_HELPER" AUR_HELPERS[@] "true" "true"
+
+    if [ ${#REFLECTOR_COUNTRIES[@]} -eq 0 ]; then
+        danger "No REFLECTOR_COUNTRIES specified."
+        exit 1
+    fi
 }
 
 function validate_prompt_variables() {

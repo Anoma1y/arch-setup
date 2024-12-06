@@ -50,6 +50,7 @@ function configure_reflector_chroot() {
     info "Installing reflector in chroot environment..."
 
     arch-chroot /mnt pacman -Sy --noconfirm reflector
+    execute_sudo "mkdir -p /etc/xdg/reflector"
     cat <<EOT > "/mnt/etc/xdg/reflector/reflector.conf"
 --country ${REFLECTOR_COUNTRIES[@]}
 --latest 25
