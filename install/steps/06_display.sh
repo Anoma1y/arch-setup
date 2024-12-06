@@ -44,7 +44,9 @@ function video_drivers_install() {
     pacman_install "${BASE_PACKAGES[@]}"
 
     local MULTILIB_PACKAGES=("${PACKAGES_DRIVER_MULTILIB[@]}" "${PACKAGES_VULKAN_MULTILIB[@]}" "${PACKAGES_HARDWARE_ACCELERATION_MULTILIB[@]}")
-    pacman_install "${MULTILIB_PACKAGES[@]}"
+    if [ ${#MULTILIB_PACKAGES[@]} -gt 0 ]; then
+        pacman_install "${MULTILIB_PACKAGES[@]}"
+    fi
 }
 
 function main() {

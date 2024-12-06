@@ -9,8 +9,13 @@ function mkinitcpio_configuration() {
     local MODULES=""
 
     # Ensure systemd and sd-vconsole are included
-    HOOKS=${HOOKS//!systemd/systemd}
-    HOOKS=${HOOKS//!sd-vconsole/sd-vconsole}
+    if [[ $HOOKS != *"systemd"* ]]; then
+        HOOKS="$HOOKS systemd"
+    fi
+
+    if [[ $HOOKS != *"sd-vconsole"* ]]; then
+        HOOKS="$HOOKS sd-vconsole"
+    fi
 
     HOOKS=$(sanitize_variable "$HOOKS")
     MODULES=$(sanitize_variable "$MODULES")
@@ -54,6 +59,9 @@ function microcode_install() {
         "amd")
             info_sub "Installing AMD microcode..."
             packages+=("amd-ucode")
+        ;;
+        *)
+            warning "No microcode updates available for CPU vendor \"$CPU_VENDOR\"..."
         ;;
     esac
 
