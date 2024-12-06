@@ -18,6 +18,8 @@ function validate_variables() {
     check_variables_value "LOCALES" "$LOCALES"
     check_variables_value "LOCALE_CONF" "$LOCALE_CONF"
 
+    check_variables_value "ESP_DIRECTORY" "$ESP_DIRECTORY"
+
     check_variables_boolean "DISK_TRIM" "$DISK_TRIM"
     check_variables_value "SWAPFILE" "$SWAPFILE"
 
