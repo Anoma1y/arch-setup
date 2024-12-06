@@ -34,7 +34,7 @@ function pacman_uninstall() {
         execute_sudo "pacman -Qi $PACKAGE > /dev/null 2>&1"
         local PACKAGE_INSTALLED=$?
         if [ $PACKAGE_INSTALLED -eq 0 ]; then
-            local PACKAGES_UNINSTALL+=("$PACKAGE")
+            PACKAGES_UNINSTALL+=("$PACKAGE")
         fi
     done
 
