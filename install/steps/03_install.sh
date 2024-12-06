@@ -76,7 +76,11 @@ EOT
 function essential_packages_install() {
     info "Installing essential packages to /mnt ..."
 
+    set +e
+
     pacstrap /mnt base base-devel linux linux-firmware
+
+    set -e
 }
 
 function main() {
