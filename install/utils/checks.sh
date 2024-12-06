@@ -6,7 +6,7 @@ function root_check() {
     # Check if the current user ID is not equal to 0 (root user)
     if [[ "$(id -u)" != "0" ]]; then
         danger "This script must be run under the 'root' user!"
-        exit 0
+        exit 1
     fi
 }
 
@@ -26,6 +26,6 @@ function efi_check() {
     # Check if the directory '/sys/firmware/efi' exists (indicates UEFI mode)
     if [ ! -d "/sys/firmware/efi" ]; then
         danger "Not running in UEFI mode."
-        exit 0
+        exit 1
     fi
 }
