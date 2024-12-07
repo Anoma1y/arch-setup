@@ -14,14 +14,14 @@ function shell_user() {
 function zsh_pure_theme_install() {
     info "Installing Pure theme for ZSH..."
 
-    execute_user "git clone https://github.com/sindresorhus/pure.git ~/.zsh/pure"
+    execute_user "git clone https://github.com/sindresorhus/pure.git /home/$USER_NAME/.zsh/pure"
 }
 
 function oh_my_zsh_plugins_install() {
     execute_user "
-        git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/plugins/zsh-autosuggestions
-        git clone https://github.com/zsh-users/zsh-completions ~/.oh-my-zsh/plugins/zsh-completions
-        git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/plugins/zsh-syntax-highlighting
+        git clone https://github.com/zsh-users/zsh-autosuggestions /home/$USER_NAME/.oh-my-zsh/plugins/zsh-autosuggestions
+        git clone https://github.com/zsh-users/zsh-completions /home/$USER_NAME/.oh-my-zsh/plugins/zsh-completions
+        git clone https://github.com/zsh-users/zsh-syntax-highlighting.git /home/$USER_NAME/.oh-my-zsh/plugins/zsh-syntax-highlighting
     "
 }
 
@@ -36,6 +36,7 @@ function oh_my_zsh_install() {
     fi
 
     execute_user "
+        mkdir -p $full_install_path
         wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -P $full_install_path
         cd $full_install_path
         sh ./install.sh --unattended
