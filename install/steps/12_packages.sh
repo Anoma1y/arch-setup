@@ -14,6 +14,7 @@ function base_install() {
         "ntp"
         "openssh"
         "traceroute"
+        "mdadm"
         "net-tools"
         "tree"
         "ufw"

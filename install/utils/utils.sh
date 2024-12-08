@@ -89,6 +89,20 @@ function ensure_group() {
     set -e
 }
 
+function ensure_folder() {
+    local folder_name="$1"
+
+    if [ -z "$folder_name" ]; then
+        danger "Error: No folder name provided."
+        return 1
+    fi
+
+    if [ ! -d "$folder_name" ]; then
+        mkdir -p "$folder_name"
+        info_sub "Folder '$folder_name' created successfully..."
+    fi
+}
+
 function do_reboot() {
     umount -R /mnt/boot
     umount -R /mnt

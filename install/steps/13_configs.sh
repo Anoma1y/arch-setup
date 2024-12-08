@@ -71,6 +71,8 @@ function git_config() {
 function main() {
     local repo_output_dir="/home/$USER_NAME/Projects/$SETUP_SCRIPT_REPO"
 
+    ensure_folder "/home/$USER_NAME/Projects/"
+
     local packages=(
         "git"
         "rsync"
