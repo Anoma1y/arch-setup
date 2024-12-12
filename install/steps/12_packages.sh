@@ -160,6 +160,14 @@ function develop_install() {
     pacman_install "${packages[@]}"
 }
 
+function laptop_install() {
+    local packages=(
+        "brightnessctl"
+    )
+
+    pacman_install "${packages[@]}"
+}
+
 function main() {
     base_install
     fonts_install
@@ -169,6 +177,10 @@ function main() {
         xorg_install
         gui_install
         additional_install
+    fi
+
+    if [[ "$DEVICE" == "laptop" ]]; then
+        laptop_install
     fi
 
     develop_install
