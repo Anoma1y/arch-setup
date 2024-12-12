@@ -129,7 +129,6 @@ function additional_install() {
 
     info_sub "Installing USB drivers and utils..."
     pacman_install "${usb_packages[@]}"
-
 }
 
 function gui_install() {
