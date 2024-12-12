@@ -3,11 +3,14 @@
 # Navigate up two directories in the file system.
 alias ...="cd ../.."
 
-# List all files and directories (including hidden ones) with detailed info, appending / to directories.
-alias ll="ls -laF"
+# List all files in long format, including hidden files
+alias ll="exa -la"
 
-# List all files and directories ordered by modification time, with newest files at the end.
-alias lls="ls -laFtr"
+# List all files in long format, including hidden files, sorted by last modified time
+alias lls="exa -la --sort=modified"
+
+# List files in long tree format
+alias llt="exa -lT"
 
 # Show a brief summary of the current git status (modified, added, deleted files).
 alias gs="git status --short"

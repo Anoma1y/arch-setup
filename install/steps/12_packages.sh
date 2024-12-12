@@ -6,15 +6,21 @@ function base_install() {
     local packages=(
         "nano"
         "vim"
+        "neovim"
         "git"
+        "git-lfs"
         "bind"
         "cmake"
+        "bat"
+        "exa"
         "dmidecode"
         "lsof"
         "ntp"
         "openssh"
         "traceroute"
         "mdadm"
+        "samba"
+        "tmux"
         "net-tools"
         "tree"
         "ufw"
@@ -27,6 +33,7 @@ function base_install() {
         "man-db"
         "man-pages"
         "ranger"
+        "ueberzug" # required by "ranger"
         "ffmpeg"
         "unzip"
         "unrar"
@@ -168,6 +175,26 @@ function laptop_install() {
     pacman_install "${packages[@]}"
 }
 
+function auto_cpufreq_install() {
+    info "Installing auto-cpufreq"
+
+    local required_packages=(
+        "git"
+        "python-pip"
+    )
+
+    pacman_install "${required_packages[@]}"
+
+    execute_user "git clone https://github.com/AdnanHodzic/auto-cpufreq.git ~/auto-cpufreq"
+    execute_sudo "
+        cd ~/auto-cpufreq
+        ./auto-cpufreq-installer
+        systemctl enable auto-cpufreq
+        systemctl start auto-cpufreq
+        systemctl status auto-cpufreq --no-pager
+    "
+}
+
 function main() {
     base_install
     fonts_install
@@ -181,6 +208,7 @@ function main() {
 
     if [[ "$DEVICE" == "laptop" ]]; then
         laptop_install
+        auto_cpufreq_install
     fi
 
     develop_install
