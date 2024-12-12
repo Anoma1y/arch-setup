@@ -4,13 +4,13 @@
 alias ...="cd ../.."
 
 # List all files in long format, including hidden files
-alias ll="exa -la"
+alias ll="eza -la"
 
 # List all files in long format, including hidden files, sorted by last modified time
-alias lls="exa -la --sort=modified"
+alias lls="eza -la --sort=modified"
 
 # List files in long tree format
-alias llt="exa -lT"
+alias llt="eza -lT"
 
 # Show a brief summary of the current git status (modified, added, deleted files).
 alias gs="git status --short"
