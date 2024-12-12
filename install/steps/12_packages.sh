@@ -34,6 +34,7 @@ function base_install() {
         "man-db"
         "man-pages"
         "ranger"
+#        "w3m" # required by "ranger"
         "ueberzug" # required by "ranger"
         "ffmpeg"
         "unzip"
@@ -146,11 +147,18 @@ function gui_install() {
         "obs-studio"
         "libreoffice-still"
     )
+    local packages_zathura=(
+        "zathura"
+        "zathura-pdf-mupdf"
+        "zathura-djvu"
+        "zathura-cb"
+    )
     local aur_packages=(
         "google-chrome"
     )
 
     pacman_install "${packages[@]}"
+    pacman_install "${packages_zathura[@]}"
     aur_install "${aur_packages[@]}"
 }
 
