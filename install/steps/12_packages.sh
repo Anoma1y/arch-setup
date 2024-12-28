@@ -5,7 +5,6 @@ set -e
 function base_install() {
     local packages=(
         "nano"
-        "vim"
         "neovim"
         "git"
         "git-lfs"
@@ -35,7 +34,7 @@ function base_install() {
         "man-pages"
         "ranger"
 #        "w3m" # required by "ranger"
-        "ueberzug" # required by "ranger"
+        "ueberzugpp" # required by "ranger"
         "ffmpeg"
         "unzip"
         "unrar"

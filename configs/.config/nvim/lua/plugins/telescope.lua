@@ -6,6 +6,14 @@ return {
             require('telescope').setup {
                 defaults = {
                     sorting_strategy = "ascending",
+					file_ignore_patterns = {
+						"node_modules/.*",
+						".idea",
+						".git/.*",
+					},
+					preview = {
+						treesitter = false,
+					}
                 },
                 pickers = {
                     find_files = {

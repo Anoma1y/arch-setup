@@ -1,5 +1,8 @@
 #!/bin/bash
 
+alias vim="nvim"
+alias vi="nvim"
+
 # Navigate up two directories in the file system.
 alias ...="cd ../.."
 
