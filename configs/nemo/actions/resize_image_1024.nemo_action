@@ -1,0 +1,7 @@
+[Nemo Action]
+Name=Resize 1024px
+Comment=Use ImageMagick''s Convert to resize image
+Exec=resize_image %F 1024
+Selection=s
+Mimetypes=image/*
+Dependencies=magick

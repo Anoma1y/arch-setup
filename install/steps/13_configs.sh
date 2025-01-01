@@ -127,6 +127,38 @@ EOL
     info_sub "A backup of the original file is saved as \"$backup_file_name\""
 }
 
+function nemo_config() {
+    info "Initializing nemo config..."
+
+    local source_path="$1/configs"
+
+    execute_sudo "
+        xdg-mime default nemo.desktop inode/directory application/x-gnome-saved-search
+        gsettings set org.nemo.desktop show-desktop-icons false
+    "
+    execute_user "
+        ln -sf $source_path/nemo /home/$USER_NAME/.local/share
+    "
+}
+
+function create_script_symlinks() {
+    info "Creating script symlinks..."
+
+    local source_path="$1/scripts"
+
+    local scripts=(
+        "resize_image.sh"
+        "docker_cleanup.sh"
+        "convert_video.sh"
+        "convert_image.sh"
+        "clear_cache.sh"
+    )
+
+    for script in "${scripts[@]}"; do
+        execute_sudo "ln -sf $source_path/$script /usr/bin/${script%.sh}"
+    done
+}
+
 function main() {
     local repo_output_dir="/home/$USER_NAME/Projects/$SETUP_SCRIPT_REPO"
 
@@ -143,6 +175,8 @@ function main() {
     create_config_symlinks "$repo_output_dir"
     create_xinit_file "$repo_output_dir"
     configure_hosts "$repo_output_dir"
+    nemo_config "$repo_output_dir"
+    create_script_symlinks "$repo_output_dir"
     git_config
 }
 

@@ -2,11 +2,12 @@
 
 set -e
 
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 UTILS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/utils"
 STEPS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/steps"
 
 function init_configs() {
-    source "_local.conf"
+    source "$ROOT_DIR/_local.conf"
 }
 
 function init_utils() {

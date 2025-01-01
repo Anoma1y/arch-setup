@@ -1,0 +1,7 @@
+[Nemo Action]
+Name=Convert to GIF
+Exec=convert_video -i "%F" -f gif
+Icon=applications-accessories
+Selection=s
+Extensions=mp4;avi;mkv;webm;wmv;mov
+Dependencies=ffmpeg

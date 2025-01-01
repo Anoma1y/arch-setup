@@ -1,0 +1,7 @@
+[Nemo Action]
+Name=Images to PDF
+Comment=Create PDF file containing selected images. PDF filename is deducted from given files names.
+Exec=<scripts/img2pdf.sh %F>
+Icon=applications-accessories
+Selection=notnone
+Mimetypes=image/*;

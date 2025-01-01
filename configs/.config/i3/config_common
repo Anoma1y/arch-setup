@@ -167,6 +167,8 @@ for_window [class="^.*"] border pixel 0
 for_window [title="Chromium"] floating disable
 for_window [title="Calculator"] floating enable
 for_window [title="Emulator"] floating enable
+# nemo-fileroller
+for_window [title="Compress"] floating enable
 for_window[instance="Godot_Editor"] floating disable
 for_window[instance="Godot_Engine"] floating enable
 

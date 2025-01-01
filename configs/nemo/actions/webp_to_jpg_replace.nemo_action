@@ -1,0 +1,6 @@
+[Nemo Action]
+Name=Webp to JPG (Replace)
+Exec=<scripts/convert_multiple_images.sh --replace yes %F>
+Icon=applications-accessories
+Selection=any
+Extensions=webp

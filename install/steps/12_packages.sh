@@ -36,10 +36,12 @@ function base_install() {
 #        "w3m" # required by "ranger"
         "ueberzugpp" # required by "ranger"
         "ffmpeg"
+        "imagemagick"
         "unzip"
         "unrar"
         "zip"
         "p7zip"
+        "img2pdf"
     )
 
     pacman_install "${packages[@]}"
@@ -134,6 +136,7 @@ function gui_install() {
     info "Installing GUI applications..."
 
     local packages=(
+        "gtk3"
         "telegram-desktop"
         "discord"
         "mpv"
@@ -144,6 +147,7 @@ function gui_install() {
         "firefox"
         "obs-studio"
         "nemo"
+        "nemo-fileroller"
         "libreoffice-still"
     )
     local packages_zathura=(
