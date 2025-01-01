@@ -143,6 +143,7 @@ function gui_install() {
         "filezilla"
         "firefox"
         "obs-studio"
+        "nemo"
         "libreoffice-still"
     )
     local packages_zathura=(

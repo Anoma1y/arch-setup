@@ -52,6 +52,14 @@ function create_config_symlinks() {
     fi
 }
 
+function create_tmux_config() {
+    local target_path="/home/$USER_NAME/.config/tmux/plugins/catppuccin"
+    local version="2.1.2"
+
+    mkdir -p "$target_path"
+    execute_user "git clone -b v$version https://github.com/catppuccin/tmux.git $target_path/tmux"
+}
+
 function create_xinit_file() {
     info "Creating xinitrc file..."
 
@@ -66,6 +74,57 @@ function git_config() {
         git config --global user.email \"$GIT_EMAIL\"
         git config --global user.name \"$GIT_NAME\"
     "
+}
+
+function add_hosts_entries() {
+    local title="$1"
+    local filename="$2"
+    local source_path="$3"
+    local target_path="$3"
+
+    local filepath="$source_path/$filename"
+
+    if [[ -f "$filepath" ]]; then
+        info_sub "Adding $title hosts..."
+        {
+            echo "# $title"
+            cat "$filepath"
+            echo ""
+        } >> "$target_path"
+    else
+        info_sub "Hosts file $filepath not found, skipping $title hosts."
+    fi
+}
+
+function configure_hosts() {
+    info "Setting hosts..."
+
+    local source_path="$1/configs/hosts"
+    local target_path="/etc/hosts"
+    local backup_file_name="$target_path".backup
+
+    info_sub "Creating /etc/hosts backup..."
+    cp "$target_path" "$backup_file_name"
+
+    info_sub "Writing default hosts entries..."
+    cat > "$target_path" <<EOL
+127.0.0.1       localhost
+::1             localhost ip6-localhost ip6-loopback
+
+ff02::1         ip6-allnodes
+ff02::2         ip6-allrouters
+
+127.0.1.1       $HOSTNAME
+EOL
+
+    echo "$DEFAULT_HOSTS" > "$target_path"
+
+    # Add custom hosts entries
+    add_hosts_entries "Docker" "docker" "$source_path" "$target_path"
+    add_hosts_entries "M1" "m1" "$source_path" "$target_path"
+
+    info_sub "Hosts file has been updated successfully."
+    info_sub "A backup of the original file is saved as \"$backup_file_name\""
 }
 
 function main() {
@@ -83,6 +142,7 @@ function main() {
     clone_setup_script_repo "$repo_output_dir"
     create_config_symlinks "$repo_output_dir"
     create_xinit_file "$repo_output_dir"
+    configure_hosts "$repo_output_dir"
     git_config
 }
 

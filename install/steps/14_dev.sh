@@ -15,8 +15,11 @@ function nvm_install() {
         nvm install $NODE_VERSION
         nvm alias default $NODE_VERSION
     "
+}
 
-    info_sub "Installing Yarn..."
+function yarn_install() {
+    info "Installing yarn..."
+
     execute_sudo "
         corepack enable
         corepack prepare yarn@stable --activate
@@ -31,6 +34,7 @@ function docker_config() {
 
 function main() {
     nvm_install
+    yarn_install
     docker_config
 }
 

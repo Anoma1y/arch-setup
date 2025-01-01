@@ -40,56 +40,6 @@ function configure_hostname() {
     echo "${HOSTNAME}" > "/mnt/etc/hostname"
 }
 
-function add_hosts_entries() {
-    local title="$1"
-    local filename="$2"
-    local full_path="$3"
-
-    local filepath="$CONFS_DIR/hosts/$filename"
-
-    if [[ -f "$filepath" ]]; then
-        info_sub "Adding $title hosts..."
-        {
-            echo "# $title"
-            cat "$filepath"
-            echo ""
-        } >> "$full_path"
-    else
-        info_sub "Hosts file $filepath not found, skipping $title hosts."
-    fi
-}
-
-
-function configure_hosts() {
-    info "Setting hosts..."
-
-    local full_path="/mnt/etc/hosts"
-    local backup_file_name="$full_path".backup
-
-    info_sub "Creating /etc/hosts backup..."
-    cp "$full_path" "$backup_file_name"
-
-    info_sub "Writing default hosts entries..."
-    cat > "$full_path" <<EOL
-127.0.0.1       localhost
-::1             localhost ip6-localhost ip6-loopback
-
-ff02::1         ip6-allnodes
-ff02::2         ip6-allrouters
-
-127.0.1.1       $HOSTNAME
-EOL
-
-    echo "$DEFAULT_HOSTS" > "$full_path"
-
-    # Add custom hosts entries
-    add_hosts_entries "Docker" "docker" "$full_path"
-    add_hosts_entries "M1" "m1" "$full_path"
-
-    info_sub "Hosts file has been updated successfully."
-    info_sub "A backup of the original file is saved as \"$backup_file_name\""
-}
-
 function set_root_password() {
     info "Setting root password..."
 
@@ -126,7 +76,6 @@ function main() {
     configure_time
     configure_locale
     configure_hostname
-    configure_hosts
     set_root_password
 }
 
