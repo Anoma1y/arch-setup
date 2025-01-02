@@ -1,9 +1,9 @@
 #!/bin/bash
 
 function prepare_partition() {
-    set +e
-
     info "Preparing partitions by unmounting existing mount points..."
+
+    set +e
 
     if mountpoint -q /mnt/boot; then
         info_sub "Unmounting boot partition..."

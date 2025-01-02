@@ -99,6 +99,11 @@ function display_timestamps() {
     echo "   Took time:   $INSTALLATION_TIME"
 }
 
+function init_log_file() {
+    local FILE="/var/log/script_install.log"
+    exec &> >(tee -a "$FILE")
+}
+
 function main() {
     START_TIMESTAMP=$(date -u +"%F %T")
 
@@ -109,6 +114,11 @@ function main() {
 
     load_steps
     filter_steps
+
+    if [[ "$LOG_FILE_ENABLED" == "true" ]]; then
+        init_log_file
+    fi
+
     execute_steps
 
     display_timestamps

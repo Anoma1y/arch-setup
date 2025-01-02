@@ -20,6 +20,7 @@ function validate_variables() {
 
     check_variables_value "ESP_DIRECTORY" "$ESP_DIRECTORY"
 
+    check_variables_boolean "IS_TEST" "$IS_TEST"
     check_variables_boolean "DISK_TRIM" "$DISK_TRIM"
     check_variables_value "SWAPFILE" "$SWAPFILE"
 
@@ -85,22 +86,30 @@ function collect_variables() {
 function prompts() {
     info "Starting prompts..."
 
-    password_prompt "ROOT" "ROOT_PASSWORD"
+    if [[ $IS_TEST == "true" ]]; then
+        USER_NAME="test_user"
+        HOSTNAME="test_hostname"
+        DEVICE="desktop"
+        ROOT_PASSWORD="1234"
+        USER_PASSWORD="1234"
+    else
+        password_prompt "ROOT" "ROOT_PASSWORD"
 
-    string_prompt USER_NAME "ayaya"
-    success "User name set to: \"$USER_NAME\""
+        string_prompt USER_NAME "ayaya"
+        success "User name set to: \"$USER_NAME\""
 
-    password_prompt "USER" "USER_PASSWORD"
+        password_prompt "USER" "USER_PASSWORD"
 
-    string_prompt HOSTNAME "yukari"
-    success "Hostname set to: \"$HOSTNAME\""
+        string_prompt HOSTNAME "yukari"
+        success "Hostname set to: \"$HOSTNAME\""
 
-    select_option DEVICE "${DEVICES[@]}" 1
-    success "Device selected: \"$DEVICE\""
+        select_option DEVICE "${DEVICES[@]}" 1
+        success "Device selected: \"$DEVICE\""
+    fi
 
     disk_prompt
 
-    if [ "$SKIP_START_WARNING" == "false" ]; then
+    if [ "$IS_TEST" != "true" ]; then
         warning "WARNING: This operation will erase all data on '$DISK_NAME'."
         read -rp "Do you want to continue? (yes/no): " USER_CONFIRMATION
 
