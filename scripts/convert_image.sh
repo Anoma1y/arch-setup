@@ -44,7 +44,7 @@ function convert_file_to_format() {
             echo "Error converting file: $input_file"
         fi
     else
-        echo "Error: ffmpeg is not installed. Please install ffmpeg to use this script."
+        echo "Error: ffmpeg is not installed."
         exit 1
     fi
 }

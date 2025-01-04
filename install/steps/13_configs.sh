@@ -2,36 +2,34 @@
 
 set -e
 
-function clone_setup_script_repo() {
-    local destination_dir="$1"
-
-    if [[ -d "$destination_dir/.git" ]]; then
-        info "Repository already exists in $destination_dir. Pulling latest changes..."
-        execute_user "cd $destination_dir && git pull"
-    else
-        info "Cloning setup repo into $destination_dir..."
-        execute_user "git clone https://github.com/Anoma1y/$SETUP_SCRIPT_REPO $destination_dir"
-    fi
+function init_home_bin_dir() {
+    info "Creating .local/bin directory..."
+    execute_user "mkdir -p $(get_local_bin_dir)"
 }
 
 function create_config_symlinks() {
-    local source_path="$1/configs/.config"
-    local output_path="/home/$USER_NAME/.config"
-    local backup_path="/home/$USER_NAME/.config_backup"
+    local source_path
+    local output_path
+    local backup_path
+
+    source_path="$(get_repository_dir)/configs/.config"
+    output_path="$(get_home_dir)/.config"
+    backup_path="$(get_home_dir)/.config_backup"
 
     mapfile -t confs < <(execute_user "ls $source_path | sort")
 
     execute_user "mkdir -p $output_path"
     execute_user "mkdir -p $backup_path"
 
-    if [ -e "/home/$USER_NAME/.zshrc" ]; then
-        local timestamp=$(date +%Y%m%d%H%M%S)
-        execute_user "mv /home/$USER_NAME/.zshrc $backup_path/.zshrc.bak_$timestamp"
+    if [ -e "$(get_home_dir)/.zshrc" ]; then
+        local timestamp
+        timestamp="$(date +%Y%m%d%H%M%S)"
+        execute_user "mv $(get_home_dir)/.zshrc $backup_path/.zshrc.bak_$timestamp"
         info_sub ".zshrc backed up to $backup_path/.zshrc.bak_$timestamp"
     fi
 
-    execute_user "ln -sf $1/configs/.zshrc /home/$USER_NAME/.zshrc"
-    info_sub "Symlinked .zshrc to /home/$USER_NAME/.zshrc"
+    execute_user "ln -sf $source_path/configs/.zshrc $(get_home_dir)/.zshrc"
+    info_sub "Symlinked .zshrc to $(get_home_dir)/.zshrc"
 
     for config in "${confs[@]}"; do
         local target="$output_path/$config"
@@ -42,7 +40,7 @@ function create_config_symlinks() {
         fi
 
         execute_user "ln -sf $source_path/$config $output_path/"
-        info "Symlinked $config to $output_path/$config"
+        info_sub "Symlinked $config to $output_path/$config"
     done
 
     if [[ "$DEVICE" == "laptop" ]]; then
@@ -53,18 +51,19 @@ function create_config_symlinks() {
 }
 
 function create_tmux_config() {
-    local target_path="/home/$USER_NAME/.config/tmux/plugins/catppuccin"
+    local target_path
+    target_path="$(get_home_dir)/.config/tmux/plugins/catppuccin"
     local version="2.1.2"
 
     mkdir -p "$target_path"
-    execute_user "git clone -b v$version https://github.com/catppuccin/tmux.git $target_path/tmux"
+    clone_or_update_git_repo "https://github.com/catppuccin/tmux.git" "$target_path/tmux" "v$version"
 }
 
-function create_xinit_file() {
+function create_xinitrc_file() {
     info "Creating xinitrc file..."
 
-    execute_user "rsync -a $1/configs/.xinitrc /home/$USER_NAME/.xinitrc"
-    execute_sudo "chmod +x /home/$USER_NAME/.xinitrc"
+    execute_user "rsync -a $(get_repository_dir)/configs/.xinitrc $(get_home_dir)/.xinitrc"
+    execute_sudo "chmod +x $(get_home_dir)/.xinitrc"
 }
 
 function git_config() {
@@ -78,36 +77,37 @@ function git_config() {
 
 function add_hosts_entries() {
     local title="$1"
-    local filename="$2"
-    local source_path="$3"
-    local target_path="$3"
+    local source_path
+    local target_path
 
-    local filepath="$source_path/$filename"
+    source_path=$(add_mnt_prefix "$3/$2")
+    target_path=$(add_mnt_prefix "$4")
 
-    if [[ -f "$filepath" ]]; then
+    if [[ -f "$source_path" ]]; then
         info_sub "Adding $title hosts..."
         {
             echo "# $title"
-            cat "$filepath"
+            cat "$source_path"
             echo ""
         } >> "$target_path"
     else
-        info_sub "Hosts file $filepath not found, skipping $title hosts."
+        info_sub "Hosts file $source_path not found, skipping $title hosts."
     fi
 }
 
 function configure_hosts() {
     info "Setting hosts..."
 
-    local source_path="$1/configs/hosts"
+    local source_path="$(get_repository_dir)/configs/hosts"
     local target_path="/etc/hosts"
     local backup_file_name="$target_path".backup
 
     info_sub "Creating /etc/hosts backup..."
-    cp "$target_path" "$backup_file_name"
+    execute_sudo "cp $target_path $backup_file_name"
 
     info_sub "Writing default hosts entries..."
-    cat > "$target_path" <<EOL
+    execute_sudo "
+        cat > $target_path <<EOL
 127.0.0.1       localhost
 ::1             localhost ip6-localhost ip6-loopback
 
@@ -115,9 +115,9 @@ ff02::1         ip6-allnodes
 ff02::2         ip6-allrouters
 
 127.0.1.1       $HOSTNAME
-EOL
 
-    echo "$DEFAULT_HOSTS" > "$target_path"
+EOL
+    "
 
     # Add custom hosts entries
     add_hosts_entries "Docker" "docker" "$source_path" "$target_path"
@@ -130,21 +130,20 @@ EOL
 function nemo_config() {
     info "Initializing nemo config..."
 
-    local source_path="$1/configs"
+    local source_path
+    source_path="$(get_repository_dir)/configs"
 
-    execute_sudo "
-        xdg-mime default nemo.desktop inode/directory application/x-gnome-saved-search
-        gsettings set org.nemo.desktop show-desktop-icons false
-    "
     execute_user "
-        ln -sf $source_path/nemo /home/$USER_NAME/.local/share
+        mkdir -p $(get_local_share_dir)
+        ln -sf $source_path/nemo $(get_local_share_dir)
     "
 }
 
 function create_script_symlinks() {
     info "Creating script symlinks..."
 
-    local source_path="$1/scripts"
+    local source_path
+    source_path="$(get_repository_dir)/scripts"
 
     local scripts=(
         "resize_image.sh"
@@ -152,18 +151,21 @@ function create_script_symlinks() {
         "convert_video.sh"
         "convert_image.sh"
         "clear_cache.sh"
+        "update_program.sh"
     )
 
     for script in "${scripts[@]}"; do
-        execute_sudo "ln -sf $source_path/$script /usr/bin/${script%.sh}"
+        local script_basename="${script%.sh}"
+        local source="$source_path/$script"
+        local target
+        target="$(get_local_bin_dir)/$script_basename"
+
+        execute_user "ln -sf $source $target"
+        info_sub "Symlinked $script to $target"
     done
 }
 
 function main() {
-    local repo_output_dir="/home/$USER_NAME/Projects/$SETUP_SCRIPT_REPO"
-
-    ensure_folder "/home/$USER_NAME/Projects/"
-
     local packages=(
         "git"
         "rsync"
@@ -171,12 +173,14 @@ function main() {
 
     pacman_install "${packages[@]}"
 
-    clone_setup_script_repo "$repo_output_dir"
-    create_config_symlinks "$repo_output_dir"
-    create_xinit_file "$repo_output_dir"
-    configure_hosts "$repo_output_dir"
-    nemo_config "$repo_output_dir"
-    create_script_symlinks "$repo_output_dir"
+    clone_setup_script_repo
+    init_home_bin_dir
+    create_config_symlinks
+    create_tmux_config
+    create_xinitrc_file
+    configure_hosts
+    nemo_config
+    create_script_symlinks
     git_config
 }
 

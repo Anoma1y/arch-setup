@@ -57,7 +57,7 @@ function pacman_uninstall() {
 function execute_aur() {
     local COMMAND="$1"
 
-    if [ "$SYSTEM_INSTALLATION" == "true" ]; then
+    if is_root; then
         # Temporarily enable NOPASSWD for wheel group
         arch-chroot /mnt sed -i 's/^%wheel ALL=(ALL:ALL) ALL$/%wheel ALL=(ALL:ALL) NOPASSWD: ALL/' /etc/sudoers
         arch-chroot /mnt bash -c "echo -e \"$USER_PASSWORD\n$USER_PASSWORD\n$USER_PASSWORD\n$USER_PASSWORD\n\" | su $USER_NAME -s /usr/bin/bash -c \"$COMMAND\""

@@ -138,7 +138,6 @@ function gui_install() {
     local packages=(
         "gtk3"
         "telegram-desktop"
-        "discord"
         "mpv"
         "flameshot"
         "gnome-calculator"

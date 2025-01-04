@@ -2,7 +2,7 @@
 
 # Add custom directories to the PATH for prioritizing binaries.
 ## Add user's custom binaries to PATH
-PATH="$HOME/bin:$PATH"
+PATH="$HOME/bin:$HOME/.local/bin:$PATH"
 
 # Set locale variables to ensure proper encoding and language settings.
 ## Set the entire system's locale to UTF-8.

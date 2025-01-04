@@ -12,7 +12,6 @@ function create_home_directories() {
         "Pictures"
         "Pictures/screenshots"
         "Videos"
-        "Videos/no"
         "Videos/obs"
         "Programs"
         "Projects"

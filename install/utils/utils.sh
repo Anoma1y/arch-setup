@@ -48,10 +48,18 @@ function step() {
     fi
 }
 
+function is_root() {
+    if [ "$(id -u)" -eq 0 ]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
 function execute_sudo() {
     local COMMAND="$1"
 
-    if [ "$SYSTEM_INSTALLATION" == "true" ]; then
+    if is_root; then
         arch-chroot /mnt bash -c "$COMMAND"
     else
         sudo bash -c "$COMMAND"
@@ -62,7 +70,7 @@ function execute_sudo() {
 function execute_user() {
     local COMMAND="$1"
 
-    if [ "$SYSTEM_INSTALLATION" == "true" ]; then
+    if is_root; then
         arch-chroot /mnt bash -c "su $USER_NAME -s /usr/bin/bash -c \"$COMMAND\""
     else
         bash -c "$COMMAND"
@@ -89,18 +97,60 @@ function ensure_group() {
     set -e
 }
 
-function ensure_folder() {
-    local folder_name="$1"
+function clone_or_update_git_repo() {
+    local repository_url=$1
+    local target_dir=$2
+    local branch="${3:-""}"
 
-    if [ -z "$folder_name" ]; then
-        danger "Error: No folder name provided."
-        return 1
+    local git_command="git clone $repository_url $target_dir"
+
+    if [[ -n "$branch" ]]; then
+        git_command="git clone -b $branch $repository_url $target_dir"
     fi
 
-    if [ ! -d "$folder_name" ]; then
-        mkdir -p "$folder_name"
-        info_sub "Folder '$folder_name' created successfully..."
+    if [[ -d "/mnt$target_dir/.git" ]]; then
+        info "Repository already exists in $target_dir. Pulling latest changes..."
+        git_command="git pull origin $branch"
+        execute_user "cd $target_dir && $git_command"
+    else
+        info "Cloning setup repo into $target_dir..."
+        execute_user "$git_command"
     fi
+}
+
+function add_mnt_prefix() {
+  local path="$1"
+
+  if [[ "$path" == /* ]]; then
+    echo "/mnt$path"
+  else
+    echo "/mnt/$path"
+  fi
+}
+
+function get_home_dir() {
+    echo "/home/$USER_NAME"
+}
+
+function get_local_bin_dir() {
+    echo "$(get_home_dir)/.local/bin"
+}
+
+function get_local_share_dir() {
+    echo "$(get_home_dir)/.local/share"
+}
+
+function get_repository_dir() {
+    echo "$(get_home_dir)/Projects/$SETUP_SCRIPT_REPO"
+}
+
+function clone_setup_script_repo() {
+    if [ ! -d "/mnt$BASE_DIR" ]; then
+        execute_user "mkdir -p $BASE_DIR"
+        info_sub "Folder '$BASE_DIR' created successfully..."
+    fi
+
+    clone_or_update_git_repo "https://github.com/Anoma1y/$SETUP_SCRIPT_REPO" "$(get_repository_dir)"
 }
 
 function do_reboot() {
@@ -136,13 +186,21 @@ function starts_with() {
     return 1
 }
 
+function get_disk_type() {
+    if echo "$DISK_NAME" | grep -q "^/dev/sd[a-z]"; then
+        echo "sda"
+    elif echo "$DISK_NAME" | grep -q "^/dev/nvme"; then
+        echo "nvme"
+    fi
+}
+
 # Function to get the correct disk name format depending on the disk type
 function get_disk_name() {
     local DISK_NAME="$1"
     local NUMBER="$2"
     local PARTITION_DISK_NAME=""
 
-    case "$DISK_TYPE" in
+    case $(get_disk_type) in
         "sda")
             PARTITION_DISK_NAME="${DISK_NAME}${NUMBER}"
         ;;

@@ -43,23 +43,15 @@ function grub_install() {
 function microcode_install() {
     info "Installing microcode..."
 
-    local packages=()
-
-    case $CPU_VENDOR in
-        "intel")
-            info_sub "Installing Intel microcode..."
-            packages+=("intel-ucode")
-        ;;
-        "amd")
-            info_sub "Installing AMD microcode..."
-            packages+=("amd-ucode")
-        ;;
-        *)
-            warning "No microcode updates available for CPU vendor \"$CPU_VENDOR\"..."
-        ;;
-    esac
-
-    pacman_install "${packages[@]}"
+    if lscpu | grep -q "GenuineIntel"; then
+        info_sub "Installing Intel microcode..."
+        pacman_install "intel-ucode"
+    elif lscpu | grep -q "AuthenticAMD"; then
+        info_sub "Installing AMD microcode..."
+        pacman_install "amd-ucode"
+    else
+        warning "No microcode updates available for CPU vendor..."
+    fi
 }
 
 function main() {

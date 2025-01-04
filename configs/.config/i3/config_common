@@ -199,7 +199,6 @@ smart_gaps on
 # **General Keybindings**
 
 bindsym $mod+Shift+o exec i3lock --color=#000000
-bindsym $mod+g exec google-chrome-stable
 bindsym $mod+c exec gnome-calculator
 bindsym $mod+n exec nemo
 bindsym $mod+d exec rofi -show run -theme custom
@@ -211,7 +210,7 @@ bindsym $mod+Print exec "flameshot gui -d 3000"
 exec --no-startup-id dex --autostart --environment i3
 
 # Start screen locker
-exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork --color=#000000
 
 # Set keyboard layout options
 exec "setxkbmap -option 'grp:alt_shift_toggle' -layout us,ru"

@@ -1,5 +1,8 @@
 #!/bin/bash
 
+AUR_HELPERS=("yay")
+DEVICES=("desktop" "laptop" "server")
+
 function sanitize_variables() {
     info "Sanitizing config variables..."
 
@@ -46,41 +49,6 @@ function validate_prompt_variables() {
     check_variables_value "USER_PASSWORD" "$USER_PASSWORD"
     check_variables_value "ROOT_PASSWORD" "$ROOT_PASSWORD"
     check_variables_value "DISK_NAME" "$DISK_NAME"
-}
-
-function collect_variables() {
-    info "Collecting variables..."
-
-    if lscpu | grep -q "GenuineIntel"; then
-        CPU_VENDOR="intel"
-    elif lscpu | grep -q "AuthenticAMD"; then
-        CPU_VENDOR="amd"
-    fi
-
-    if lspci -nn | grep "\[03" | grep -qi "intel"; then
-        GPU_VENDOR="intel"
-    elif lspci -nn | grep "\[03" | grep -qi "amd"; then
-        GPU_VENDOR="amd"
-    elif lspci -nn | grep "\[03" | grep -qi "nvidia"; then
-        GPU_VENDOR="nvidia"
-    elif lspci -nn | grep "\[03" | grep -qi "vmware"; then
-        GPU_VENDOR="vmware"
-    fi
-
-    if [ "$(whoami)" == "root" ]; then
-        SYSTEM_INSTALLATION="true"
-    fi
-
-    if echo "$DISK_NAME" | grep -q "^/dev/sd[a-z]"; then
-        DISK_TYPE="sda"
-    elif echo "$DISK_NAME" | grep -q "^/dev/nvme"; then
-        DISK_TYPE="nvme"
-    fi
-
-    if [ "$DISK_TRIM" == "true" ]; then
-        DISK_PARTITION_OPTIONS_BOOT="$DISK_PARTITION_OPTIONS_BOOT,noatime"
-        DISK_PARTITION_OPTIONS="$DISK_PARTITION_OPTIONS,noatime"
-    fi
 }
 
 function prompts() {
@@ -151,15 +119,14 @@ function main() {
     prompts
 
     validate_prompt_variables
-    collect_variables
 
     check_internet_connection
 
     configure_time
 
-    pacman -Sy
+#    pacman -Sy
 
-    add_key_server
+#    add_key_server
 }
 
 main
