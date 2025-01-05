@@ -47,6 +47,21 @@ function base_install() {
     pacman_install "${packages[@]}"
 }
 
+function i3_install() {
+    info "Installing I3 packages..."
+
+    local packages=(
+        "i3-wm"
+        "polybar"
+        "rofi"
+        "xss-lock"
+        "i3lock"
+        "dunst"
+    )
+
+    pacman_install "${packages[@]}"
+}
+
 function xorg_install() {
     info "Installing XORG packages..."
 
@@ -211,6 +226,7 @@ function main() {
     fonts_install
 
     if [[ "$DEVICE" != "server" ]]; then
+        i3_install
         audio_install
         xorg_install
         gui_install

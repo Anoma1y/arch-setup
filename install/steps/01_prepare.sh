@@ -55,8 +55,8 @@ function prompts() {
     info "Starting prompts..."
 
     if [[ $IS_TEST == "true" ]]; then
-        USER_NAME="test_user"
-        HOSTNAME="test_hostname"
+        USER_NAME="user"
+        HOSTNAME="test_host"
         DEVICE="desktop"
         ROOT_PASSWORD="1234"
         USER_PASSWORD="1234"
@@ -94,14 +94,6 @@ function configure_time() {
     timedatectl set-ntp true
 }
 
-function add_key_server() {
-    info "Updating the Arch Linux keyring..."
-    pacman -S --noconfirm --color=always archlinux-keyring
-
-    info_sub "Adding the Ubuntu keyserver to the GPG (GNU Privacy Guard) configuration for secure package signing..."
-    echo "keyserver hkp://keyserver.ubuntu.com" >> /etc/pacman.d/gnupg/gpg.conf
-}
-
 function check_internet_connection() {
     info "Checking internet connection..."
 
@@ -115,18 +107,11 @@ function check_internet_connection() {
 function main() {
     sanitize_variables
     validate_variables
-
     prompts
-
     validate_prompt_variables
-
     check_internet_connection
-
     configure_time
-
-#    pacman -Sy
-
-#    add_key_server
+    pacman -Sy
 }
 
 main

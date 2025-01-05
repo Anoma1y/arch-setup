@@ -12,24 +12,14 @@ function create_config_symlinks() {
     local output_path
     local backup_path
 
-    source_path="$(get_repository_dir)/configs/.config"
+    source_path="$(get_repository_dir)/configs"
     output_path="$(get_home_dir)/.config"
     backup_path="$(get_home_dir)/.config_backup"
 
-    mapfile -t confs < <(execute_user "ls $source_path | sort")
+    mapfile -t confs < <(execute_user "ls $source_path/.config | sort")
 
     execute_user "mkdir -p $output_path"
     execute_user "mkdir -p $backup_path"
-
-    if [ -e "$(get_home_dir)/.zshrc" ]; then
-        local timestamp
-        timestamp="$(date +%Y%m%d%H%M%S)"
-        execute_user "mv $(get_home_dir)/.zshrc $backup_path/.zshrc.bak_$timestamp"
-        info_sub ".zshrc backed up to $backup_path/.zshrc.bak_$timestamp"
-    fi
-
-    execute_user "ln -sf $source_path/configs/.zshrc $(get_home_dir)/.zshrc"
-    info_sub "Symlinked .zshrc to $(get_home_dir)/.zshrc"
 
     for config in "${confs[@]}"; do
         local target="$output_path/$config"
@@ -42,6 +32,22 @@ function create_config_symlinks() {
         execute_user "ln -sf $source_path/$config $output_path/"
         info_sub "Symlinked $config to $output_path/$config"
     done
+}
+
+function create_zsh_config() {
+    info "Creating and symlinking ZSH config..."
+
+    local source_path
+    source_path="$(get_repository_dir)/configs"
+
+    execute_user "ln -sf $source_path/configs/.zshrc $(get_home_dir)/.zshrc"
+}
+
+function create_i3_config() {
+    info "Creating i3 machine config..."
+
+    local output_path
+    output_path="$(get_home_dir)/.config"
 
     if [[ "$DEVICE" == "laptop" ]]; then
         execute_user "ln -sf $output_path/i3/config_laptop $output_path/i3/config_machine"
@@ -98,9 +104,11 @@ function add_hosts_entries() {
 function configure_hosts() {
     info "Setting hosts..."
 
-    local source_path="$(get_repository_dir)/configs/hosts"
+    local source_path
     local target_path="/etc/hosts"
     local backup_file_name="$target_path".backup
+
+    source_path="$(get_repository_dir)/configs/hosts"
 
     info_sub "Creating /etc/hosts backup..."
     execute_sudo "cp $target_path $backup_file_name"
@@ -176,6 +184,8 @@ function main() {
     clone_setup_script_repo
     init_home_bin_dir
     create_config_symlinks
+    create_zsh_config
+    create_i3_config
     create_tmux_config
     create_xinitrc_file
     configure_hosts

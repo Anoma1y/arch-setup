@@ -11,6 +11,12 @@ function initialize_pacman_keys() {
     fi
 
     pacman-key --populate
+
+    info "Updating the Arch Linux keyring..."
+    pacman -S --noconfirm --color=always archlinux-keyring
+
+    info_sub "Adding the Ubuntu keyserver to the GPG (GNU Privacy Guard) configuration for secure package signing..."
+    echo "keyserver hkp://keyserver.ubuntu.com" >> /etc/pacman.d/gnupg/gpg.conf
 }
 
 function modify_pacman_conf() {
