@@ -8,20 +8,22 @@ function init_home_bin_dir() {
 }
 
 function create_config_symlinks() {
-    local source_path
-    local output_path
-    local backup_path
+    local source_path output_path backup_path
+    local exclude=("i3")
 
-    source_path="$(get_repository_dir)/configs"
+    source_path="$(get_repository_dir)/configs/.config"
     output_path="$(get_home_dir)/.config"
     backup_path="$(get_home_dir)/.config_backup"
 
-    mapfile -t confs < <(execute_user "ls $source_path/.config | sort")
+    mapfile -t confs < <(execute_user "ls $source_path | sort")
 
-    execute_user "mkdir -p $output_path"
-    execute_user "mkdir -p $backup_path"
+    execute_user "mkdir -p $output_path $backup_path"
 
     for config in "${confs[@]}"; do
+        if contains exclude "$config"; then
+            continue
+        fi
+
         local target="$output_path/$config"
         if [ -e "$target" ] || [ -L "$target" ]; then
             local timestamp=$(date +%Y%m%d%H%M%S)
@@ -40,20 +42,27 @@ function create_zsh_config() {
     local source_path
     source_path="$(get_repository_dir)/configs"
 
-    execute_user "ln -sf $source_path/configs/.zshrc $(get_home_dir)/.zshrc"
+    execute_user "ln -sf $source_path/.zshrc $(get_home_dir)/.zshrc"
 }
 
 function create_i3_config() {
-    info "Creating i3 machine config..."
+    info "Creating i3 config..."
 
-    local output_path
-    output_path="$(get_home_dir)/.config"
+    local source_path output_path
 
-    if [[ "$DEVICE" == "laptop" ]]; then
-        execute_user "ln -sf $output_path/i3/config_laptop $output_path/i3/config_machine"
-    else
-        execute_user "ln -sf $output_path/i3/config_desktop $output_path/i3/config_machine"
-    fi
+    source_path="$(get_repository_dir)/configs/.config/i3"
+    output_path="$(get_home_dir)/.config/i3"
+
+    local config_machine="config_desktop"
+    [[ "$DEVICE" == "laptop" ]] && config_machine="config_laptop"
+
+    execute_user "
+        mkdir -p $output_path
+        ln -sf $source_path/$config_machine $output_path/config_machine
+        ln -sf $source_path/config $output_path
+        ln -sf $source_path/workspaces $output_path
+        ln -sf $source_path/config_common $output_path
+    "
 }
 
 function create_tmux_config() {
@@ -83,8 +92,7 @@ function git_config() {
 
 function add_hosts_entries() {
     local title="$1"
-    local source_path
-    local target_path
+    local source_path target_path
 
     source_path=$(add_mnt_prefix "$3/$2")
     target_path=$(add_mnt_prefix "$4")
