@@ -104,6 +104,23 @@ function check_internet_connection() {
     fi
 }
 
+function initialize_pacman_keys() {
+    info "Initializing pacman keys..."
+
+    if ! pacman-key --init; then
+        danger "Failed to initialize pacman keys."
+        exit 1
+    fi
+
+    pacman-key --populate
+
+    info "Updating the Arch Linux keyring..."
+    pacman -S --noconfirm --color=always archlinux-keyring
+
+    info_sub "Adding the Ubuntu keyserver to the GPG (GNU Privacy Guard) configuration for secure package signing..."
+    echo "keyserver hkp://keyserver.ubuntu.com" >> /etc/pacman.d/gnupg/gpg.conf
+}
+
 function main() {
     sanitize_variables
     validate_variables
@@ -112,6 +129,7 @@ function main() {
     check_internet_connection
     configure_time
     pacman -Sy
+    initialize_pacman_keys
 }
 
 main

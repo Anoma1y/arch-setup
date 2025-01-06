@@ -2,23 +2,6 @@
 
 set -e
 
-function initialize_pacman_keys() {
-    info "Initializing pacman keys..."
-
-    if ! pacman-key --init; then
-        danger "Failed to initialize pacman keys."
-        exit 1
-    fi
-
-    pacman-key --populate
-
-    info "Updating the Arch Linux keyring..."
-    pacman -S --noconfirm --color=always archlinux-keyring
-
-    info_sub "Adding the Ubuntu keyserver to the GPG (GNU Privacy Guard) configuration for secure package signing..."
-    echo "keyserver hkp://keyserver.ubuntu.com" >> /etc/pacman.d/gnupg/gpg.conf
-}
-
 function modify_pacman_conf() {
     local conf_path="$1"
 
@@ -90,7 +73,6 @@ function essential_packages_install() {
 }
 
 function main() {
-    initialize_pacman_keys
     update_mirrorlist
     modify_pacman_conf "/etc/pacman.conf"
     essential_packages_install

@@ -152,8 +152,10 @@ function gui_install() {
 
     local packages=(
         "gtk3"
+        "arc-gtk-theme"
         "telegram-desktop"
         "mpv"
+        "gpicview"
         "flameshot"
         "gnome-calculator"
         "dunst"

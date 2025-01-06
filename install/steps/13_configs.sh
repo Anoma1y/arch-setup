@@ -19,6 +19,8 @@ function create_config_symlinks() {
 
     execute_user "mkdir -p $output_path $backup_path"
 
+    sed "s|<USER_NAME>|$USER_NAME|g" "$source_path/flameshot/flameshot.template.ini" > "$source_path/flameshot/flameshot.ini"
+
     for config in "${confs[@]}"; do
         if contains exclude "$config"; then
             continue
