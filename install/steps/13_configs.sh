@@ -18,8 +18,7 @@ function create_config_symlinks() {
     mapfile -t confs < <(execute_user "ls $source_path | sort")
 
     execute_user "mkdir -p $output_path $backup_path"
-
-    sed "s|<USER_NAME>|$USER_NAME|g" "$source_path/flameshot/flameshot.template.ini" > "$source_path/flameshot/flameshot.ini"
+    execute_user "sed 's|<USER_NAME>|$USER_NAME|g' $source_path/flameshot/flameshot.template.ini > $source_path/flameshot/flameshot.ini"
 
     for config in "${confs[@]}"; do
         if contains exclude "$config"; then

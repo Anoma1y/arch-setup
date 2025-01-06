@@ -129,7 +129,7 @@ function main() {
     check_internet_connection
     configure_time
     pacman -Sy
-    initialize_pacman_keys
+#    initialize_pacman_keys
 }
 
 main
