@@ -2,6 +2,13 @@
 
 set -e
 
+
+function clone_setup_script_repo() {
+    info "Cloning setup script repository..."
+
+    clone_or_update_git_repo "https://github.com/Anoma1y/$SETUP_SCRIPT_REPO" "$(get_repository_dir)"
+}
+
 function init_home_bin_dir() {
     info "Creating .local/bin directory..."
     execute_user "mkdir -p $(get_local_bin_dir)"
@@ -182,6 +189,14 @@ function create_script_symlinks() {
     done
 }
 
+function update_setup_script_repo() {
+    info "Updating setup script repository..."
+
+    execute_user "
+        cd $(get_repository_dir) && git remote set-url origin git@github.com:Anoma1y/$SETUP_SCRIPT_REPO.git
+    "
+}
+
 function main() {
     local packages=(
         "git"
@@ -201,6 +216,7 @@ function main() {
     nemo_config
     create_script_symlinks
     git_config
+    update_setup_script_repo
 }
 
 main

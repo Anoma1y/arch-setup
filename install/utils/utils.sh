@@ -144,15 +144,6 @@ function get_repository_dir() {
     echo "$(get_home_dir)/Projects/$SETUP_SCRIPT_REPO"
 }
 
-function clone_setup_script_repo() {
-    if [ ! -d "/mnt$BASE_DIR" ]; then
-        execute_user "mkdir -p $BASE_DIR"
-        info_sub "Folder '$BASE_DIR' created successfully..."
-    fi
-
-    clone_or_update_git_repo "https://github.com/Anoma1y/$SETUP_SCRIPT_REPO" "$(get_repository_dir)"
-}
-
 function do_reboot() {
     umount -R /mnt/boot
     umount -R /mnt

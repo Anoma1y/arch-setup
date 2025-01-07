@@ -207,6 +207,7 @@ bindsym Print exec "flameshot gui"
 bindsym $mod+Print exec "flameshot gui -d 3000"
 
 # **Startup Applications**
+exec --no-startup-id flameshot
 exec --no-startup-id dex --autostart --environment i3
 
 # Start screen locker
