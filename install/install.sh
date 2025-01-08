@@ -6,6 +6,42 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 UTILS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/utils"
 STEPS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/steps"
 
+IS_TEST="false"
+SKIP_STEPS=()
+ONLY_STEPS=()
+
+function display_help() {
+  echo "Usage: $0 [options]"
+  echo "Options:"
+  echo "  --test           Run the install script in test mode"
+  echo "  --skip=1,2,3     Skip specified steps (comma-separated)"
+  echo "  --only=1,2,3     Execute only specified steps (comma-separated)"
+  echo "  -h, --help       Display this help message"
+  exit 0
+}
+
+# Parse arguments
+for arg in "$@"; do
+  case $arg in
+    --test)
+      IS_TEST="true"
+      ;;
+    --skip=*)
+      SKIP_STEPS=( $(echo "${arg#*=}" | tr ',' ' ') )
+      ;;
+    --only=*)
+      ONLY_STEPS=( $(echo "${arg#*=}" | tr ',' ' ') )
+      ;;
+    -h|--help)
+      display_help
+      ;;
+    *)
+      echo "Unknown argument: $arg"
+      display_help
+      ;;
+  esac
+done
+
 function init_configs() {
     source "$ROOT_DIR/_local.conf"
 }
