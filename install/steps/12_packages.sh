@@ -33,6 +33,7 @@ function base_install() {
         "man-db"
         "man-pages"
         "ranger"
+        "fuse"
 #        "w3m" # required by "ranger"
         "ueberzugpp" # required by "ranger"
         "ffmpeg"
