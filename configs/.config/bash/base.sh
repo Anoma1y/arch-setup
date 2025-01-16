@@ -9,3 +9,5 @@ PATH="$HOME/bin:$HOME/.local/bin:$PATH"
 export LC_ALL=en_US.UTF-8
 ## Set language preferences to US English in UTF-8 encoding.
 export LANG=en_US.UTF-8
+
+export EDITOR=nvim
