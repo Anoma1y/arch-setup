@@ -1,0 +1,9 @@
+[Nemo Action]
+Name=Play with MPV (Video + Audio/Subs)
+Comment=Play selected video with optional audio and subtitle files using mpv
+Exec=<scripts/play_with_mpv.sh %F>
+Icon-Name=mpv
+Selection=any
+Extensions=mp4;mkv;avi;mov;wmv;flv;webm;mka;mp3;wav;aac;ogg;flac;ass;srt;sub;vtt;
+Quote=double
+
