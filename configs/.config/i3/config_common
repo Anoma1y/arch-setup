@@ -169,8 +169,9 @@ for_window [title="Calculator"] floating enable
 for_window [title="Emulator"] floating enable
 # nemo-fileroller
 for_window [title="Compress"] floating enable
-for_window[instance="Godot_Editor"] floating disable
-for_window[instance="Godot_Engine"] floating enable
+for_window [instance="Godot_Editor"] floating disable
+for_window [instance="Godot_Engine"] floating enable
+for_window [class="Anki"] floating enable
 
 set $first-color #0c7393
 
