@@ -30,6 +30,14 @@ function reset_branch() {
     esac
   done
 
+  echo "This will delete the local branch '$target_branch' and reset it from origin."
+  read -rp "Are you sure you want to continue? (y/n): " confirm
+
+  if [[ "$confirm" != [yY] ]]; then
+    echo "Operation cancelled."
+    return 0
+  fi
+
   git checkout "$base_branch" && \
   git branch -D "$target_branch" && \
   git fetch origin "$target_branch" && \
