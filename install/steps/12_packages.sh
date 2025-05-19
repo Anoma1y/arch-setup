@@ -153,7 +153,6 @@ function gui_install() {
 
     local packages=(
         "gtk3"
-        "arc-gtk-theme"
         "telegram-desktop"
         "mpv"
         "gpicview"
@@ -174,6 +173,7 @@ function gui_install() {
         "zathura-cb"
     )
     local aur_packages=(
+        "arc-gtk-theme"
         "google-chrome"
     )
 
