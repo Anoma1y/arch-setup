@@ -33,7 +33,7 @@ function grub_install() {
     pacman_install "${packages[@]}"
     arch-chroot /mnt grub-install --target=x86_64-efi \
         --efi-directory=${ESP_DIRECTORY} \
-        --bootloader-id=GRUB \
+        --bootloader-id=Linux \
         --recheck
 
     # Generate the GRUB configuration file
