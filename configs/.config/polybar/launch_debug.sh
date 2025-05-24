@@ -13,8 +13,8 @@ PRIMARY=$(xrandr --query | grep " connected primary" | cut -d" " -f1)
 
 for m in $(polybar --list-monitors | cut -d":" -f1); do
     if [[ "$m" == "$PRIMARY" ]]; then
-        MONITOR=$m polybar "$NAME" &
+        (MONITOR=$m polybar --reload "$NAME" ; echo $? >> ~/.config/polybar/debug.log) &
     else
-        MONITOR=$m polybar secondary &
+        MONITOR=$m polybar --reload secondary &
     fi
 done
