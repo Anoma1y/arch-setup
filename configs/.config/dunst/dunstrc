@@ -1,8 +1,10 @@
 [global]
     ### Display ###
 
+    monitor = 3
+
     # Display notifications on monitor with mouse focus
-    follow = mouse
+    follow = none
 
     # Show number of hidden notifications
     indicate_hidden = yes
@@ -37,7 +39,7 @@
     ### Text ###
 
     # Set font of notifications
-    font = JetBrains Mono Regular 14
+    font = JetBrains Mono Regular 12
 
     # Markup parsing
     markup = full
