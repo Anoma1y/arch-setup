@@ -3,3 +3,7 @@ include ~/.config/i3/config_common
 
 # Include machine-specific configurations
 include ~/.config/i3/config_machine
+
+# Include workspace configurations
+include ~/.config/i3/workspaces
+
