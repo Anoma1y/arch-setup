@@ -16,6 +16,7 @@ function base_install() {
         "lsof"
         "ntp"
         "openssh"
+        "openconnect"
         "traceroute"
         "mdadm"
         "samba"
@@ -43,6 +44,7 @@ function base_install() {
         "zip"
         "p7zip"
         "img2pdf"
+        "gvfs-smb"
     )
 
     pacman_install "${packages[@]}"
