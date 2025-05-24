@@ -4,7 +4,7 @@
 set $mod Mod4
 
 # Font for window titles
-font pango:JetBrains Mono, size 12
+font pango:JetBrains Mono, size 10
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
