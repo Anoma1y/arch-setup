@@ -13,7 +13,7 @@ function install_programs() {
 }
 
 function main() {
-    install_programs
+    echo ""
 }
 
 main
