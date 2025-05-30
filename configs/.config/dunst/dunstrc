@@ -1,10 +1,8 @@
 [global]
-    ### Display ###
-
     monitor = 3
-
-    # Display notifications on monitor with mouse focus
     follow = none
+	notification_limit = 10
+	offset = (10, 10)
 
     # Show number of hidden notifications
     indicate_hidden = yes
@@ -12,29 +10,21 @@
     # Shrink window if smaller than width
     shrink = no
 
-    # Set transparency of notifications
-    transparency = 0
-
     # Height of seperators
     separator_height = 2
+	separator_color = frame
 
     # Text and seperator padding
-    padding = 8
+    padding = 4
+
+	# Gaps between entries
+	gap_size = 10
 
     # Horizontal padding
     horizontal_padding = 16
 
     # Width of frame around window
-    frame_width = 1.5
-
-    # Color of frame around window
-    frame_color = "#2c9dd2"
-
-    # Sort messages by urgency
-    sort = yes
-
-    # Idle seconds
-    idle_threshold = 0
+    frame_width = 1
 
     ### Text ###
 
@@ -120,14 +110,20 @@
     # Right click
     mouse_right_click = do_action
 
-[urgency_normal]
-    # Normal urgency notifications
-    background = "#050d0e"
-    foreground = "#ffffff"
+[urgency_low]
+    background = "#404040"
+    foreground = "#CCCCCC"
+	frame_color = "#404040"
     timeout = 5
 
+[urgency_normal]
+    background = "#050d0e"
+    foreground = "#ffffff"
+	frame_color = "#0f0d0e"
+    timeout = 15
+
 [urgency_critical]
-    # High urgency notifications
-    background = "#ffffff"
-    foreground = "#db0101"
+    background = "#dc322f"
+    foreground = "#dddddd"
+	frame_color = "#dc322f"
     timeout = 0
