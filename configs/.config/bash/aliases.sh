@@ -22,7 +22,7 @@ alias gs="git status --short"
 alias gsf="git status"
 
 # Clear the terminal, display system info (with CPU details and temperature)
-alias flex="clear && fastfetch"
+alias flex="clear && fastfetch --cpu-temp --gpu-temp"
 
 # Show the differences between the working directory and the latest commit or staging area.
 alias gdiff="git diff"
