@@ -2,6 +2,9 @@
 vim.o.encoding = "utf-8"
 vim.o.fileencoding = "utf-8"
 
+-- Use system clipboard
+vim.o.clipboard = "unnamedplus"
+
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.tabstop = 4
