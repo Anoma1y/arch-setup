@@ -123,6 +123,8 @@ bindsym $mod+Shift+0 move container to workspace number $ws10
 
 # **i3 Configuration Management**
 
+tiling_drag disable
+
 # Reload the configuration file
 bindsym $mod+Shift+c reload
 

@@ -3,6 +3,7 @@
     follow = none
 	notification_limit = 10
 	offset = (10, 10)
+	width = 500
 
     # Show number of hidden notifications
     indicate_hidden = yes
