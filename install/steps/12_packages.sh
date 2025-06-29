@@ -37,6 +37,7 @@ function base_install() {
         "fuse"
 #        "w3m" # required by "ranger"
         "ueberzugpp" # required by "ranger"
+		"keepass"
         "ffmpeg"
         "imagemagick"
         "unzip"
@@ -193,6 +194,7 @@ function develop_install() {
         "docker"
         "docker-compose"
         "nodejs"
+        "npm"
     )
 
     pacman_install "${packages[@]}"

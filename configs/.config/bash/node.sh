@@ -3,6 +3,8 @@
 # Add global npm modules binaries to PATH.
 PATH="$HOME/.node_modules/bin:$PATH"
 
+alias pn=pnpm
+
 # Lazy load nvm to save shell startup time ~1-3 seconds
 function lazynvm() {
     unset -f nvm node npm yarn

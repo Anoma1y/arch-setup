@@ -111,6 +111,11 @@
     # Right click
     mouse_right_click = do_action
 
+[Spotify]
+    appname = spotify
+    format = "<b>Now Playing:</b>\n%s\n%b"
+    timeout = 10
+
 [urgency_low]
     background = "#404040"
     foreground = "#CCCCCC"
