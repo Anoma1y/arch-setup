@@ -21,8 +21,8 @@ alias gs="git status --short"
 # Display full git status, including untracked and staged files.
 alias gsf="git status"
 
-# Clear the terminal, display system info (with CPU details and temperature)
-alias flex="clear && fastfetch --cpu-temp --gpu-temp"
+# Clear the terminal, display system info
+alias flex="clear && fastfetch"
 
 # Show the differences between the working directory and the latest commit or staging area.
 alias gdiff="git diff"
