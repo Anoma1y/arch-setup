@@ -35,6 +35,7 @@ function base_install() {
         "man-pages"
         "ranger"
         "fuse"
+        "playerctl"
 #        "w3m" # required by "ranger"
         "ueberzugpp" # required by "ranger"
 		"keepass"
