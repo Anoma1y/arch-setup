@@ -193,7 +193,6 @@ function develop_install() {
         "python"
         "go"
         "docker"
-        "docker-compose"
         "nodejs"
         "npm"
     )
