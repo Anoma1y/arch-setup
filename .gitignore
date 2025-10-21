@@ -2,6 +2,7 @@
 vscode
 
 configs/.config/i3/config_machine
+configs/.config/gpicview/
 
 +.log
 
