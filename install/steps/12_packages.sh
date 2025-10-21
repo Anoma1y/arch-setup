@@ -193,7 +193,7 @@ function develop_install() {
         "python"
         "go"
         "docker"
-        "nodejs"
+        "nodejs-lts-jod"
         "npm"
     )
 
