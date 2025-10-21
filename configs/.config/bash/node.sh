@@ -5,35 +5,33 @@ PATH="$HOME/.node_modules/bin:$PATH"
 
 alias pn=pnpm
 
-# Lazy load nvm to save shell startup time ~1-3 seconds
-function lazynvm() {
-    unset -f nvm node npm yarn
-
-    # Check if NVM directory is set, if not, set it to the user's nvm directory.
-    [ -z "$NVM_DIR" ] && export NVM_DIR="$HOME/.nvm"
-
-    # Unset the npm_config_prefix to avoid conflicts with npm behavior.
-    unset npm_config_prefix
-
-    [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+lazy_load_nvm() {
+  unset -f npm node nvm pnpm yarn
+  export NVM_DIR=~/.nvm
+  [[ -s "$NVM_DIR/nvm.sh" ]] && source "$NVM_DIR/nvm.sh"
 }
 
 nvm() {
-  lazynvm
+  lazy_load_nvm
   nvm "$@"
 }
 
 node() {
-  lazynvm
+  lazy_load_nvm
   node "$@"
 }
 
 npm() {
-  lazynvm
+  lazy_load_nvm
   npm "$@"
 }
 
 yarn() {
-  lazynvm
+  lazy_load_nvm
   yarn "$@"
+}
+
+pnpm() {
+  lazy_load_nvm
+  pnpm "$@"
 }
