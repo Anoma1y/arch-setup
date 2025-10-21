@@ -23,6 +23,7 @@ function yarn_install() {
     execute_sudo "
         corepack enable
         corepack prepare yarn@stable --activate
+        corepack enable pnpm
     "
 }
 
