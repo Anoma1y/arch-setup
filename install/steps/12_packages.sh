@@ -12,6 +12,7 @@ function base_install() {
         "cmake"
         "bat"
         "eza"
+        "zoxide"
         "dmidecode"
         "lsof"
         "ntp"
