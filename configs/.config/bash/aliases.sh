@@ -3,6 +3,15 @@
 alias vim="nvim"
 alias vi="nvim"
 
+alias gs="git status --short"
+alias gco="git checkout"
+alias gcb="git checkout -b"
+alias gcm="git commit -m"
+alias gcma="git commit --ammend"
+alias gdf="git diff"
+alias gpull="git pull"
+alias gpush="git push"
+
 # Navigate up two directories in the file system.
 alias ...="cd ../.."
 
@@ -15,17 +24,8 @@ alias lls="eza -la --sort=modified"
 # List files in long tree format
 alias llt="eza -lT"
 
-# Show a brief summary of the current git status (modified, added, deleted files).
-alias gs="git status --short"
-
-# Display full git status, including untracked and staged files.
-alias gsf="git status"
-
 # Clear the terminal, display system info
 alias flex="clear && fastfetch"
-
-# Show the differences between the working directory and the latest commit or staging area.
-alias gdiff="git diff"
 
 # Display a concise and graphical git commit log with commit hash, message, relative date, and author.
 alias glog="git log --graph --pretty=format:'%Cred%h%Creset - %s %Cgreen(%cr) %C(bold blue)<%an>%C(yellow)%d%Creset' --abbrev-commit"
