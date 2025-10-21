@@ -24,7 +24,6 @@ function base_install() {
         "tmux"
         "net-tools"
         "tree"
-        "ufw"
         "yq"
         "wget"
         "curl"

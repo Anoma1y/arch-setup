@@ -6,7 +6,6 @@ function systemd_units_enable() {
     info "Enabling/starting systemd services..."
 
     local systemd_units=(
-        "ufw.service"
         "bluetooth.service"
         "docker.service"
     )
