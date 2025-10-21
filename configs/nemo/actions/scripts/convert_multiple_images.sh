@@ -22,6 +22,9 @@ if [ "$#" -eq 0 ]; then
 fi
 
 for file in "$@"; do
+    # Only process webp files
+    [[ "${file##*.}" != "webp" ]] && continue
+    
     if [[ "$replace" == "yes" ]]; then
         convert_image "$file" -f jpg -d
     else

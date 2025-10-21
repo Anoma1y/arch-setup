@@ -3,4 +3,4 @@ Name=Webp to JPG
 Exec=<scripts/convert_multiple_images.sh --replace no %F>
 Icon=applications-accessories
 Selection=any
-Extensions=webp
+Extensions=webp;jpg;jpeg;png;bmp;tiff;tif
