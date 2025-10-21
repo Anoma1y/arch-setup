@@ -74,12 +74,17 @@ function create_i3_config() {
 }
 
 function create_tmux_config() {
+    info "Creating tmux config..."
+
     local target_path
     target_path="$(get_home_dir)/.config/tmux/plugins/catppuccin"
-    local version="2.1.2"
+    local version="2.1.3"
 
-    mkdir -p "$target_path"
-    clone_or_update_git_repo "https://github.com/catppuccin/tmux.git" "$target_path/tmux" "v$version"
+    execute_user "mkdir -p $target_path"
+    clone_or_update_git_repo "https://github.com/catppuccin/tmux.git" "$target_path" "v$version"
+    execute_user "
+        ln -sf $(get_repository_dir)/configs/.tmux.conf $(get_home_dir)/.tmux.conf
+    "
 }
 
 function create_xinitrc_file() {
