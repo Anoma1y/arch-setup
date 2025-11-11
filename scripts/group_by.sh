@@ -14,8 +14,20 @@ while [[ "$#" -gt 0 ]]; do
             SOURCE_PROVIDED=1
             shift
             ;;
+        --sort-by)
+            if [ -z "$2" ]; then
+                echo "Error: The --sort-by option requires an argument (month|day)." >&2
+                exit 1
+            fi
+            SORT_BY="$2"
+            if [[ "$SORT_BY" != "month" && "$SORT_BY" != "day" ]]; then
+                echo "Error: Invalid argument for --sort-by. Use 'month' or 'day'." >&2
+                exit 1
+            fi
+            shift
+            ;;
         *)
-            echo "Error: Unknown option '$1'. Usage: $0 [--source /path/to/folder]" >&2
+            echo "Error: Unknown option '$1'. Usage: $0 [--source /path/to/folder] [--sort-by month|day]" >&2
             exit 1
             ;;
     esac
@@ -46,11 +58,15 @@ for file in "$TARGET_DIR"/*; do
         MOD_TIMESTAMP=$(stat -c "%y" "$file" 2>/dev/null)
         
         if [[ -z "$MOD_TIMESTAMP" ]]; then
-            echo "⚠️ Skipping '$FILENAME': Could not retrieve modification timestamp (GNU stat failed). Install coreutils or adjust stat command."
+            echo "⚠️ Skipping '$FILENAME': Could not retrieve modification timestamp (GNU stat failed)."
             continue
         fi
-        
-        FOLDER_NAME=$(LC_ALL=C date -d "$MOD_TIMESTAMP" +%Y-%m)
+
+        if [[ "$SORT_BY" == "month" ]]; then
+            FOLDER_NAME=$(LC_ALL=C date -d "$MOD_TIMESTAMP" +%Y-%m)
+        else
+            FOLDER_NAME=$(LC_ALL=C date -d "$MOD_TIMESTAMP" +%Y-%m-%d)
+        fi
 
         DEST_DIR="$TARGET_DIR/$FOLDER_NAME"
 
