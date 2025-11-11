@@ -90,7 +90,10 @@ function create_tmux_config() {
 function create_xinitrc_file() {
     info "Creating xinitrc file..."
 
-    execute_user "rsync -a $(get_repository_dir)/configs/.xinitrc $(get_home_dir)/.xinitrc"
+    execute_user "
+		rsync -a $(get_repository_dir)/configs/.xinitrc $(get_home_dir)/.xinitrc
+		ln -sf $(get_repository_dir)/configs/.Xresources $(get_home_dir)/.Xresources
+	"
     execute_sudo "chmod +x $(get_home_dir)/.xinitrc"
 }
 

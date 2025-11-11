@@ -12,6 +12,10 @@ alias gdf="git diff"
 alias gpull="git pull"
 alias gpush="git push"
 
+gpushb() {
+  git push origin "$(git symbolic-ref --short HEAD)"
+}
+
 # Navigate up two directories in the file system.
 alias ...="cd ../.."
 
