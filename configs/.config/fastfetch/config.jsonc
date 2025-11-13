@@ -1,0 +1,22 @@
+{
+  "modules": [
+    { "type": "os" },
+    { "type": "host" },
+    { "type": "kernel" },
+    { "type": "uptime" },
+    { "type": "memory" },
+    { "type": "disk" },
+    {
+      "type": "cpu",
+      "temp": true,
+      "tempUnit": "C"
+    },
+    {
+      "type": "gpu",
+      "temp": true,
+      "tempUnit": "C"
+    },
+    { "type": "display" },	
+  ]
+}
+
