@@ -20,5 +20,6 @@ autoload -Uz compinit && compinit
 
 source "$ZSH/oh-my-zsh.sh"
 source "$HOME/.config/bash/_init.sh"
+source "$HOME/.config/bash/_nvm.sh"
 
 eval "$(zoxide init zsh)"
