@@ -1,5 +1,5 @@
 [global]
-    monitor = 3
+    monitor = 1
     follow = none
 	notification_limit = 10
 	offset = (10, 10)
