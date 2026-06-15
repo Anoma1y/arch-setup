@@ -36,3 +36,8 @@ foreground = "#efeae4"
 [colors.selection]
 background = "#44475a"
 text = "CellForeground"
+
+[[keyboard.bindings]]
+key = "Return"
+mods = "Shift"
+chars = "\u001B\r"

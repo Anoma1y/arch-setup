@@ -1,6 +1,6 @@
 [global]
     monitor = 1
-    follow = none
+	follow = none
 	notification_limit = 10
 	offset = (10, 10)
 	width = 500

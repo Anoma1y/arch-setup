@@ -29,7 +29,7 @@ case $1 in
     "discord")
         DOWNLOAD_URL="https://discord.com/api/download?platform=linux&format=tar.gz"
         TARGET_DIR=$(format_target_dir "Discord")
-        EXECUTABLE_FILEPATH="$TARGET_DIR/Discord"
+        EXECUTABLE_FILEPATH="$TARGET_DIR/discord"
         COMMAND_NAME="discord"
         DOWNLOAD_FILE="$TEMP_DIR/discord.tar.gz"
     ;;

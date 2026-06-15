@@ -207,7 +207,8 @@ bindsym $mod+c exec gnome-calculator
 bindsym $mod+n exec nemo
 bindsym $mod+d exec rofi -show run -theme custom
 bindsym $mod+Shift+s exec "flameshot gui"
-bindsym Print exec "flameshot gui"
+# bindsym Print exec "flameshot gui"
+bindsym Print exec --no-startup-id maim -s | swappy -f -
 bindsym $mod+Print exec "flameshot gui -d 3000"
 
 # **Startup Applications**
