@@ -4,11 +4,16 @@ Brief usage notes for scripts under `scripts/`.
 
 ## backup/backup.sh
 
-Rsync backup driven by `backup_config.yml` (see `backup/backup_config.yml.example`). Requires `yq` and `rsync`. Run from the `scripts/backup/` directory (or ensure the config file is next to the script):
+Rsync backup driven by `backup_config.yml` next to the script (see `backup/backup_config.yml.example`). Requires `yq` and `rsync`.
+
+- **Folder** source: mirrors contents into `target + destination` (`rsync --delete`).
+- **File** source: syncs that single file to `target + destination`.
+- If `destination` is omitted, uses the source basename (e.g. `~/Images` → `$target/Images`).
 
 ```bash
-cp backup_config.yml.example backup_config.yml   # edit target + sources
-./backup.sh
+cp scripts/backup/backup_config.yml.example scripts/backup/backup_config.yml
+# edit target + sources, then:
+./scripts/backup/backup.sh
 ```
 
 ## clear_cache.sh

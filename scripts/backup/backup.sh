@@ -2,7 +2,8 @@
 
 set -e
 
-CONFIG_FILE="backup_config.yml"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+CONFIG_FILE="${SCRIPT_DIR}/backup_config.yml"
 
 function check_dependencies() {
   if ! command -v yq &> /dev/null
@@ -23,18 +24,31 @@ function expand_path() {
 }
 
 function perform_backup() {
-  local source_dir="$1"
-  local dest_dir="$2"
+  local source="$1"
+  local dest="$2"
 
-  mkdir -p "$dest_dir"
+  if [ -d "$source" ]; then
+    mkdir -p "$dest"
+    # Trailing slashes: sync folder contents; --delete mirrors removals
+    rsync -avh --delete "${source}/" "${dest}/"
+  elif [ -f "$source" ]; then
+    mkdir -p "$(dirname "$dest")"
+    rsync -avh "$source" "$dest"
+  else
+    echo "Source '$source' does not exist. Skipping."
+    return 0
+  fi
 
-  rsync -avh --delete "$source_dir/" "$dest_dir/"
-
-  echo "Backup of '$source_dir' to '$dest_dir' completed successfully."
+  echo "Backup of '$source' to '$dest' completed successfully."
 }
 
 function main() {
   check_dependencies
+
+  if [ ! -f "$CONFIG_FILE" ]; then
+    echo "Config file '$CONFIG_FILE' not found. Copy backup_config.yml.example to backup_config.yml."
+    exit 1
+  fi
 
   target=$(yq e '.target' "$CONFIG_FILE")
   target=$(expand_path "$target")
@@ -48,16 +62,15 @@ function main() {
 
   for (( i=0; i<sources_length; i++ )); do
     source=$(yq e ".sources[$i].source" "$CONFIG_FILE")
-    destination=$(yq e ".sources[$i].destination" "$CONFIG_FILE")
+    destination=$(yq e ".sources[$i].destination // \"\"" "$CONFIG_FILE")
 
     source=$(expand_path "$source")
 
-    full_destination="$target$destination"
-
-    if [ ! -d "$source" ]; then
-      echo "Source directory '$source' does not exist. Skipping."
-      continue
+    if [ -z "$destination" ] || [ "$destination" = "null" ]; then
+      destination="/$(basename "$source")"
     fi
+
+    full_destination="$target$destination"
 
     perform_backup "$source" "$full_destination"
   done

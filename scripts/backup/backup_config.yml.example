@@ -1,7 +1,9 @@
-# Target backup directory (ensure it's mounted if it's a device)
-target: /dev/sdaX
+# Mount point / backup root (not a raw device like /dev/sdaX)
+target: /mnt/backup
 
-# List of sources to backup with their respective destination paths
+# Folders are mirrored (--delete). Files are copied as-is.
+# If destination is omitted, uses the source basename (e.g. ~/Images -> /Images).
 sources:
   - source: ~/Images
-    destination: /Images
+  - source: ~/Documents/notes.txt
+    destination: /Documents/notes.txt
