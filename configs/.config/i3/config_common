@@ -175,6 +175,7 @@ for_window [instance="Godot_Editor"] floating disable
 for_window [instance="Godot_Engine"] floating enable
 for_window [class="Anki"] floating enable
 for_window [title="AmneziaVPN"] floating enable
+for_window [title="flameshot"] floating enable
 
 set $first-color #0c7393
 
@@ -222,4 +223,6 @@ exec "setxkbmap -option 'grp:alt_shift_toggle' -layout us,ru"
 
 # Start notification daemon (Dunst)
 exec --no-startup-id dunst
+
+exec --no-startup-id ~/.config/i3/scripts/setup-monitors.sh
 
