@@ -6,4 +6,4 @@ configs/.config/gpicview/
 
 +.log
 
-scripts/backup/backup_config.yml
+scripts/backup/backup_config.json

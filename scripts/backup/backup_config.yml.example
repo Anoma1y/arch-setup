@@ -1,9 +1,0 @@
-# Mount point / backup root (not a raw device like /dev/sdaX)
-target: /mnt/backup
-
-# Folders are mirrored (--delete). Files are copied as-is.
-# If destination is omitted, uses the source basename (e.g. ~/Images -> /Images).
-sources:
-  - source: ~/Images
-  - source: ~/Documents/notes.txt
-    destination: /Documents/notes.txt

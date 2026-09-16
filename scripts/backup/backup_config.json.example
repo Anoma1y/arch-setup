@@ -1,0 +1,40 @@
+{
+  "target": "/mnt/backup",
+  "exclude": [
+    ".git",
+    "node_modules",
+    "tmp",
+    "temp",
+    "__pycache__",
+    ".cache",
+    "*.tmp"
+  ],
+  "sources": [
+    {
+      "source": "~/Images"
+    },
+    {
+      "destination": ".claude",
+      "source": [
+        "~/.claude/settings.json",
+        "skills"
+      ]
+    },
+    {
+      "base": "~/.claude",
+      "destination": ".claude-alt",
+      "source": [
+        "settings.json",
+        "skills"
+      ]
+    },
+    {
+      "source": "~/Projects",
+      "exclude": [
+        "dist",
+        "build",
+        "*.log"
+      ]
+    }
+  ]
+}

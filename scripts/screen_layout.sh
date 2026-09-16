@@ -1,5 +1,8 @@
 #!/bin/bash
 
+read -rp "Apply screen layout? [y/N] " answer
+[[ "$answer" =~ ^[Yy]$ ]] || exit 0
+
 for output in $(xrandr | grep " connected" | cut -d' ' -f1); do
     xrandr --output "$output" --off
 done

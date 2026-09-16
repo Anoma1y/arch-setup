@@ -4,14 +4,17 @@ Brief usage notes for scripts under `scripts/`.
 
 ## backup/backup.sh
 
-Rsync backup driven by `backup_config.yml` next to the script (see `backup/backup_config.yml.example`). Requires `yq` and `rsync`.
+Rsync backup driven by `backup_config.json` next to the script (see `backup/backup_config.json.example`). Requires `jq` and `rsync`.
 
 - **Folder** source: mirrors contents into `target + destination` (`rsync --delete`).
 - **File** source: syncs that single file to `target + destination`.
-- If `destination` is omitted, uses the source basename (e.g. `~/Images` → `$target/Images`).
+- `source` may be a string or an array. Arrays place each item under `destination` by basename.
+- Relative paths in an array resolve via optional `base`, or against the parent of the first absolute path (so `"skills"` next to `"~/.claude/settings.json"` → `~/.claude/skills`).
+- If `destination` is omitted, uses the source basename (or `base` / common parent for arrays).
+- Optional `exclude` (global and/or per source): rsync patterns, e.g. `.git`, `node_modules`, `*.tmp`.
 
 ```bash
-cp scripts/backup/backup_config.yml.example scripts/backup/backup_config.yml
+cp scripts/backup/backup_config.json.example scripts/backup/backup_config.json
 # edit target + sources, then:
 ./scripts/backup/backup.sh
 ```
